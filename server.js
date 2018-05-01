@@ -7,6 +7,7 @@ var session = require('express-session');
 var survey = require('../COMP5347/app/routes/survey.server.route');
 var surveysession = require('./app/routes/surveysession.server.routes');
 
+// test commit AB
 var app = express();
 app.locals.products=['iphone 7', 'huawei p9', 'Pixel XL', 'Samsung S7'];
 app.locals.surveyresults = {
