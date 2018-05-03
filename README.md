@@ -5,11 +5,11 @@
 
 ## File structure 
 
- - app
+ - app (logic unit)
     - controllers
     - models
     - routes
+ - static (templates and styles)
     - views
- - public
     - css
- app.js
+ - app.js (main app)
