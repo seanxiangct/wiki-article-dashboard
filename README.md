@@ -20,8 +20,10 @@
 
 ## Implementation 
 
- - To load all json data files
-     1. Open Linux terminal
+### Import data
+
+ - To load all json data files on Linux system
+     1. Open terminal
      2. Move to the directory storing all the json files 
      3. copy the following command and press enter 
 
