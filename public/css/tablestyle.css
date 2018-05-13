@@ -1,3 +1,5 @@
+/* example css */
+
 table {
    border: collapse;
    border-spacing: 0;
@@ -10,4 +12,5 @@ table tbody td{
    vertical-align: middle;
    padding: 0.5em 0.75em;
 }
+
 

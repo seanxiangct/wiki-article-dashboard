@@ -1,30 +1,17 @@
 /**
- * 
+ * Revision schema
  */
 var mongoose = require('./db')
 
-// abstract schema 
-
-// schema for wiki articles revisions
 var RevisionSchema = new mongoose.Schema(
 		{title: String, 
-		 timestamp:String, 
+		 timestamp:Date, 
 		 user:String, 
 		 anon:String},
 		 {
 		 	versionKey: false
 		})
 
-// schema for storing user information
-var UserSchema = new mongoose.Schema(
-		{
-			username: String,
-			password: String,
-			email: String,
-			first_name: String,
-			last_name: String
-		}
-	)
 
 // find the latest revision of an article 
 RevisionSchema.statics.findTitleLatestRev = function(title, callback)
@@ -33,12 +20,6 @@ RevisionSchema.statics.findTitleLatestRev = function(title, callback)
 	.sort({'timestamp':-1})
 	.limit(1)
 	.exec(callback)
-}
-
-// Sign up
-UserSchema.statics.signUp = function(callback) 
-{
-	return this.insert
 }
 
 
