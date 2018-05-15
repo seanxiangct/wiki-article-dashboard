@@ -4,5 +4,6 @@ var router = express.Router()
 
 router.get('/', controller.showLandingPage)
 router.get('/signUp', controller.signUp)
+router.get('/signIn', controller.signIn)
 
 module.exports = router

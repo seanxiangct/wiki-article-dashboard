@@ -30,6 +30,15 @@ UserSchema.statics.signUp = function(data, callback)
     return new_user.save()
 }
 
+// Sign in
+UserSchema.statics.signIn = function(username, psw, callback)
+{
+    return this.find({
+        'username': username,
+        'password': psw
+    }).exec(callback)
+}
+
 // model is a schema binded with a collection
 // Schema.model(model_name, schema variable, collection name)
 // Mongoose automatically looks for the plural version of the model name

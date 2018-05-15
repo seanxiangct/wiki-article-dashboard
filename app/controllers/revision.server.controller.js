@@ -34,16 +34,37 @@ module.exports.showLandingPage = function(req, res)
 
 module.exports.signUp = function(req, res)
 {
-	data = req.query
-    console.log(data)
+	data = req.query;
+    console.log(data);
     
     User.signUp(data, function(err, result){
         
         if (err) {
-            console.log('Cannot create new account')
+            console.log('Cannot create new account with error code' + err);
         } else {
-            console.log(result)
-            res.render('landing_page.ejs')
+            console.log(result);
+            res.render('landing_page.ejs');
+        }
+    })
+}
+
+module.exports.signIn = function(req, res)
+{
+    username = req.query.username;
+    psw = req.query.psw;
+    
+    User.signIn(username, psw, function(err, result){
+        
+        if (err) {
+            console.log('Cannot sign in with error code' + err);
+        } else {
+            user = result[0];
+            if (user)
+            {
+                res.render('analytics.ejs');
+            } else {
+                res.render('landing_page.ejs');
+            }
         }
     })
 }

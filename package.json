@@ -1,7 +1,7 @@
 {
-  "name": "week9-src",
+  "name": "wiki",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Project Management",
   "main": "revserver.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,10 +9,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "html": "^1.0.0",
     "mongoose": "^5.0.17",
+    "npm": "^6.0.1",
     "pug": "^2.0.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salmonlon/COMP5347-assignment2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/salmonlon/COMP5347-assignment2/issues"
+  },
+  "homepage": "https://github.com/salmonlon/COMP5347-assignment2#readme"
 }
