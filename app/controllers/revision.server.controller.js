@@ -68,3 +68,19 @@ module.exports.signIn = function(req, res)
         }
     })
 }
+
+
+// Analytics page functions
+module.exports.showAnalyticsPage = function(req, res)
+{
+    //res.render('analytics.ejs')
+    Revision.findTitleHighestNoRev(3, function(err, result){
+        if (err){
+			console.log("Cannot find the most revised articles!")
+		}else{
+			// console.log(result)
+			res.send(result)
+		}
+    })
+}
+
