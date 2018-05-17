@@ -8,7 +8,7 @@ module.exports.showTitleForm = function(req,res)
 
 module.exports.getLatest = function(req,res)
 {
-	title = req.query.title;
+	let title = req.query.title;
     console.log(title);
 
 	Revision.findTitleLatestRev(title, function(err,result){
@@ -18,7 +18,6 @@ module.exports.getLatest = function(req,res)
 		}else{
 			// console.log(result)
 			revision = result[0];
-			console.log(revision);
 			res.render('revision.pug',{title: title, revision:revision})
 		}	
 	})	
@@ -32,17 +31,22 @@ module.exports.showLandingPage = function(req, res)
 	res.render('landing_page.ejs')
 }
 
+// POST method, data contains in the resquest body
 module.exports.signUp = function(req, res)
 {
-	data = req.query;
-    console.log(data);
+    data = {
+        'fisrt': req.body.user.first,
+        'last': req.body.user.last,
+        'email': req.body.user.email,
+        'name': req.body.user.name,
+        'psw': req.body.user.psw
+    };
     
     User.signUp(data, function(err, result){
         
         if (err) {
             console.log('Cannot create new account with error code' + err);
         } else {
-            console.log(result);
             res.render('landing_page.ejs');
         }
     })
@@ -50,10 +54,12 @@ module.exports.signUp = function(req, res)
 
 module.exports.signIn = function(req, res)
 {
-    username = req.query.username;
-    psw = req.query.psw;
+    data = {
+        'name': req.body.user.name,
+        'psw': req.body.user.psw
+    };
     
-    User.signIn(username, psw, function(err, result){
+    User.signIn(data, function(err, result){
         
         if (err) {
             console.log('Cannot sign in with error code' + err);

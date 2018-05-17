@@ -20,22 +20,28 @@ UserSchema.statics.signUp = function(data, callback)
 {
     var new_user = new User(
         {
-            username: data.username,
+            username: data.name,
             password: data.psw,
             email: data.email,
-            first_name: data.first_name,
-            last_name: data.last_name
+            first_name: data.first,
+            last_name: data.last
         }
     )
-    return new_user.save()
+    new_user.save(function(err){
+        if (err)
+            console.log(err)
+        callback();
+    });
+    
+//    return new_user.save()
 }
 
 // Sign in
-UserSchema.statics.signIn = function(username, psw, callback)
+UserSchema.statics.signIn = function(data, callback)
 {
     return this.find({
-        'username': username,
-        'password': psw
+        'username': data.name,
+        'password': data.psw
     }).exec(callback)
 }
 
