@@ -23,6 +23,17 @@ RevisionSchema.statics.findTitleLatestRev = function(title, callback)
 }
 
 
+// find the highest number of revisions
+RevisionSchema.statics.findTitleHighestNoRev = function(number, callback){
+	console.log('access fuction')
+	return this.aggregate()
+	.group({_id:"$title", numOfEdits: {$sum:1}})
+	.sort('-numOfEdits')
+	.limit(number)
+	.exec(callback)
+}
+
+
 // model is a schema binded with a collection
 // Schema.model(model_name, schema variable, collection name)
 // Mongoose automatically looks for the plural version of the model name
