@@ -61,6 +61,7 @@ module.exports.signIn = function(req, res)
                 req.flash('success', 'Signed in!');
                 res.render('analytics.ejs');
             } else {
+                req.flash('danger', 'Incorrect username or password!');
                 res.redirect('/');
             }
         }
