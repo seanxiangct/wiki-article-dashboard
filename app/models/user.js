@@ -1,7 +1,7 @@
 /**
  * User schema
  */
-var mongoose = require('./db')
+var mongoose = require('./db');
 
 // schema for storing user information
 var UserSchema = new mongoose.Schema(
