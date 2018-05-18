@@ -10,6 +10,7 @@ const body_parser = require('body-parser');
 const session = require('express-session');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
+//const passport = require('passport');
 
 // load express router
 var routes = require('./app/routes/router');
@@ -60,7 +61,10 @@ app.use(expressValidator({
     }
 }))
 
-
+// passport config
+//require('./app/config/passport')(passport);
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 // home route
 app.use('/',routes);

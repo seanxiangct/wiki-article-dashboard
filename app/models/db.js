@@ -1,8 +1,9 @@
 // database initialization
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const config = require('../config/database');
 
-mongoose.connect('mongodb://localhost/wikipedia', function () {
+mongoose.connect(config.database, function () {
   console.log('mongodb connected')
 });
 

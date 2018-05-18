@@ -16,7 +16,7 @@ var UserSchema = new mongoose.Schema(
  
 
 // Sign up
-UserSchema.statics.signUp = function(data, callback) 
+UserSchema.statics.save_user_data = function(data, callback) 
 {
     var new_user = new User(
         {
@@ -28,12 +28,8 @@ UserSchema.statics.signUp = function(data, callback)
         }
     )
     new_user.save(function(err){
-        if (err)
-            console.log(err)
-        callback();
+        callback(err);
     });
-    
-//    return new_user.save()
 }
 
 // Sign in

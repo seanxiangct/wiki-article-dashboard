@@ -31,5 +31,7 @@ function validate_password()
         repeat.setCustomValidity('');
     }
 }
+
+
 psw.onchange = validate_password;
 repeat.onkeyup = validate_password;

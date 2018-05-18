@@ -1,6 +1,7 @@
-var Revision = require("../models/revision");
-var User = require('../models/user');
-
+const Revision = require("../models/revision");
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const promise = require('bluebird');
 
 // landing page functions
 
@@ -20,7 +21,7 @@ module.exports.signUp = function(req, res)
     const psw2 = req.body.user.repeat;
     
     
-    let data = {
+    var data = {
         'fisrt': first,
         'last': last,
         'email': email,
@@ -28,19 +29,30 @@ module.exports.signUp = function(req, res)
         'psw': psw
     };
     
-    // validate sign up form
-    
-    User.signUp(data, function(err, result){
+    // check unique user name
 
+    // hash password
+//    bcrypt.genSalt(10, function(err, salt) {
+//        bcrypt.hash(data.psw, salt, function(err, hash) {
+//            if (err) {
+//                console.log(err);
+//            }
+//            data.psw = hash;
+//        });
+//    });
+    
+    User.save_user_data(data, function(err, result){
+
+        console.log(err)
         if (err) {
-            console.log('Cannot create new account with error code' + err);
+            // error code 11000: duplicate unique key
+            req.flash('danger', 'User already exists!');
+            res.redirect('/');
         } else {
             req.flash('success', 'User registered!');
             res.redirect('/');
         }
     })       
-    
-
 }
 
 module.exports.signIn = function(req, res)
@@ -59,7 +71,7 @@ module.exports.signIn = function(req, res)
             if (user)
             {
                 req.flash('success', 'Signed in!');
-                res.render('analytics.ejs');
+                res.redirect('/analytics');
             } else {
                 req.flash('danger', 'Incorrect username or password!');
                 res.redirect('/');
