@@ -29,9 +29,7 @@ module.exports.signUp = function(req, res)
         'psw': psw
     };
     
-    // check unique user name
-
-    // hash password
+//    hash password
 //    bcrypt.genSalt(10, function(err, salt) {
 //        bcrypt.hash(data.psw, salt, function(err, hash) {
 //            if (err) {
@@ -43,11 +41,12 @@ module.exports.signUp = function(req, res)
     
     User.save_user_data(data, function(err, result){
 
-        console.log(err)
         if (err) {
             // error code 11000: duplicate unique key
-            req.flash('danger', 'User already exists!');
-            res.redirect('/');
+            if (err.code == 11000) {
+                req.flash('danger', 'User already exists!');
+                res.redirect('/');
+            }  
         } else {
             req.flash('success', 'User registered!');
             res.redirect('/');
@@ -84,13 +83,16 @@ module.exports.signIn = function(req, res)
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)
 {
-    //res.render('analytics.ejs')
     Revision.findTitleHighestNoRev(3, function(err, result){
         if (err){
 			console.log("Cannot find the most revised articles!")
 		}else{
-			// console.log(result)
-			res.send(result)
+            for (let i = 0, size = result.length; i < size; i++)
+            {
+                console.log(result[i]);
+            }
+//			res.send(result)
+            res.render('analytics.ejs', { top_revisions: result })
 		}
     })
 }
