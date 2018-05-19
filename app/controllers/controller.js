@@ -79,7 +79,6 @@ module.exports.signIn = function(req, res)
     })
 }
 
-
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)
 {
@@ -87,11 +86,6 @@ module.exports.showAnalyticsPage = function(req, res)
         if (err){
 			console.log("Cannot find the most revised articles!")
 		}else{
-            for (let i = 0, size = result.length; i < size; i++)
-            {
-                console.log(result[i]);
-            }
-//			res.send(result)
             res.render('analytics.ejs', { top_revisions: result })
 		}
     })
