@@ -22,7 +22,7 @@ module.exports.signUp = function(req, res)
     
     
     var data = {
-        'fisrt': first,
+        'first': first,
         'last': last,
         'email': email,
         'name': name,
