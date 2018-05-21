@@ -82,34 +82,26 @@ module.exports.signIn = function(req, res)
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)
 {
-    Revision.findTitleHighestNoRev(3, function(err, result){
+    Revision.findTitleHighestNoRev(3, function(err, titleHighestNoRev){
         if (err){
 			console.log("Cannot find the most revised articles!");
             res.redirect('/');
 		}else{
-            var titleHighestNoRev = [];
-            for (let i = 0, size = result.length; i < size; i++)
-            {
-                titleHighestNoRev[i] = result[i];
-                console.log(titleHighestNoRev[i]);
-            }
             
-            Revision.findTitleHighestAge(3, function(err, result){
+            Revision.findTitleHighestAge(3, function(err, titleHighestAge){
                 if (err){
                     res.render('analytics.ejs', { top_revisions: titleHighestNoRev })
 			        console.log("Cannot find the oldest articles!")
 		        }else{
-                    var titleHighestAge = [];
-                    var firstRevDate = [];
-                    for (let i = 0, size = result.length; i < size; i++)
+                    var msecToYear = 31536000000;
+                    for (let i = 0, size = titleHighestAge.length; i < size; i++)
                     {   
                         // findTitleHighestAge returns title and firstRevision (timestamp as a string)
                         // subtracting current date time from firstRevision returns difference in milliseconds
                         // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
-                        firstRevDate[i] = (new Date() - new Date(result[i].firstRevision))/(1000*60*60*24*365);
-                        firstRevDate[i] = firstRevDate[i].toFixed(2);
-                        titleHighestAge.push({title: result[i]._id, age: firstRevDate[i]})
-                        console.log(titleHighestAge[i]);
+                        let firstRevDate = (new Date() - new Date(titleHighestAge[i].firstRevision)) / msecToYear;
+                        firstRevDate = firstRevDate.toFixed(2);
+                        titleHighestAge[i] = {title: titleHighestAge[i]._id, age: firstRevDate};
                     }
                     res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge})
                 }
