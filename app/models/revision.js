@@ -41,6 +41,20 @@ RevisionSchema.statics.countAllUsers = function (callback) {
 }
 
 
+// find the titles with the highest age
+RevisionSchema.statics.findTitleHighestAge = function(number, callback){
+	return this.aggregate()
+	// sort prior to $group stage so that $first is meaningful
+	.sort({'timestamp':1})
+	//set a reasonable limit to avoid query execution failure
+	.limit(1000)
+	.group({_id:"$title", firstRevision: {$first:"$timestamp"}})
+	.sort({'firstRevision':1})
+	.limit(number)
+	.exec(callback)
+}
+
+
 // model is a schema binded with a collection
 // Schema.model(model_name, schema variable, collection name)
 // Mongoose automatically looks for the plural version of the model name

@@ -86,8 +86,33 @@ module.exports.showAnalyticsPage = function(req, res)
         if (err){
 			console.log("Cannot find the most revised articles!")
 		}else{
-            res.render('analytics.ejs', { top_revisions: result })
+            var titleHighestNoRev = [];
+            for (let i = 0, size = result.length; i < size; i++)
+            {
+                titleHighestNoRev[i] = result[i];
+                console.log(titleHighestNoRev[i]);
+            }
+//          
+            Revision.findTitleHighestAge(3, function(err, result){
+                if (err){
+                    res.render('analytics.ejs', { top_revisions: titleHighestNoRev })
+			        console.log("Cannot find the oldest articles!")
+		        }else{
+                    var titleHighestAge = [];
+                    var firstRevDate = [];
+                for (let i = 0, size = result.length; i < size; i++)
+                {   
+                    // findTitleHighestAge returns title and firstRevision (timestamp as a string)
+                    // subtracting current date time from firstRevision returns difference in milliseconds
+                    // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
+                    firstRevDate[i] = (new Date() - new Date(result[i].firstRevision))/(1000*60*60*24*365);
+                    firstRevDate[i] = firstRevDate[i].toFixed(2);
+                    titleHighestAge.push({title: result[i]._id, age: firstRevDate[i]})
+                    console.log(titleHighestAge[i]);
+                }
+                res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge})
+                }
+            })
 		}
     })
 }
-
