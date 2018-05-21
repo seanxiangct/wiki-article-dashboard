@@ -32,6 +32,14 @@ RevisionSchema.statics.findTitleHighestNoRev = function(number, callback){
 	.exec(callback)
 }
 
+// retrive the number of users for each type
+RevisionSchema.statics.countAllUsers = function (callback) {
+//    return this.aggregate()
+//    .group({
+//        'user'
+//    })
+}
+
 
 // find the titles with the highest age
 RevisionSchema.statics.findTitleHighestAge = function(number, callback){
