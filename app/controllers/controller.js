@@ -86,7 +86,6 @@ module.exports.showAnalyticsPage = function(req, res)
         if (err){
 			console.log("Cannot find the most revised articles!")
 		}else{
-<<<<<<< HEAD
             var titleHighestNoRev = [];
             for (let i = 0, size = result.length; i < size; i++)
             {
@@ -114,9 +113,6 @@ module.exports.showAnalyticsPage = function(req, res)
                 res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge})
                 }
             })
-=======
-            res.render('analytics.ejs', { top_revisions: result })
->>>>>>> dbd484e00688ddb239df8b42568048497444bb1f
 		}
     })
 }
