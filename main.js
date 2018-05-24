@@ -61,6 +61,14 @@ app.use(expressValidator({
     }
 }))
 
+
+// Min trying to get user input
+//app.post("/analytics", function (req, res) {
+//    console.log(req.body.numArticle);
+//   app.locals.numArticle = req.body.numArticle;
+//    console.log(numArticle);
+//});
+
 // passport config
 //require('./app/config/passport')(passport);
 //app.use(passport.initialize());

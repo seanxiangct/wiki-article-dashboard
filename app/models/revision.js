@@ -31,6 +31,14 @@ RevisionSchema.statics.findTitleHighestNoRev = function(number, callback){
 	.limit(number)
 	.exec(callback)
 }
+// find the lowest number of revisions
+RevisionSchema.statics.findTitleLowestNoRev = function(number, callback){
+	return this.aggregate()
+	.group({_id:"$title", numOfEdits: {$sum:1}})
+	.sort('numOfEdits')
+	.limit(number)
+	.exec(callback)
+}
 
 // retrive the number of users for each type
 RevisionSchema.statics.countAllUsers = function (callback) {
