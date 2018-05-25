@@ -22,12 +22,7 @@
     <script>
         window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')
     </script>
-    <script src="js/ejs.js"></script>
-    <!-- Google charts scripts -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <!-- local script -->
-    <script src="js/analytics.js"></script>
+    <!-- <script src="js/ejs.js"></script> -->
 
 </head>
 
@@ -57,7 +52,7 @@
 
             <!--      place google chart here      -->
             <h1>Overview</h1>
-            <div id="google-chart">
+            <div id="chart">
 
             </div>
             <div>
@@ -77,35 +72,37 @@
     <% var author_html = include('templates/author.ejs'); %>
 
     <script>
-       $(document).ready(function(){
-           $("#group_button").click(function(){
-               console.log("group clicked");
-               $("#analysis").html(`<%- group_html %>`);
+        $(document).ready(function(){
+            $("#group_button").click(function(){
+                $("#analysis").html(`<%- group_html %>`);
 
-           });
-           $("#individual_button").click(function(){
-            console.log("individual clicked");
-            $("#analysis").html(`<%- indiv_html %>`);     
+            });
+            $("#individual_button").click(function(){
+                $("#analysis").html(`<%- indiv_html %>`);     
+            });
+            $("#author_button").click(function(){
+                $("#analysis").html(`<%- author_html %>`);     
+            });    
+
+
         });
-           $("#author_button").click(function(){
-            console.log("author clicked");
-            $("#analysis").html(`<%- author_html %>`);     
-        });    
 
-       });
+    </script> 
 
-   </script> 
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-   <!-- Bootstrap core JavaScript -->
-   <!-- Placed at the end of the document so the pages load faster -->
-   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <!-- Google charts scripts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+    <!-- local script -->
+    <script src="js/analytics.js"></script>
 
+    <script>
 
-   <script>
-
-   </script>
+    </script>
 
 </body>
 

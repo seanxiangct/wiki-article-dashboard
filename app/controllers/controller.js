@@ -79,20 +79,40 @@ module.exports.signIn = function(req, res)
     })
 }
 
+module.exports.getUserCounts = function(req, res)
+{
+    Promise.all([
+        Revision.find({type: 'admin'}).count(),
+        Revision.find({type: 'anon'}).count(),
+        Revision.find({type: 'bot'}).count(),
+        Revision.find({type: 'reg'}).count()
+        ]).then(function(user_counts) {
+            user_counts = {
+                'admin': user_counts[0],
+                'anon': user_counts[1],
+                'bot': user_counts[2],
+                'reg': user_counts[3]
+            };
+            res.json(user_counts)
+        }).catch(function(err) {
+            console.log("Cannot count users");
+        });
+}
+
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)
 {
     Revision.findTitleHighestNoRev(3, function(err, titleHighestNoRev){
         if (err){
-           console.log("Cannot find the most revised articles!");
-           res.redirect('/');
-       }else{
+            console.log("Cannot find the most revised articles!");
+            res.redirect('/');
+        }else{
 
-        Revision.findTitleHighestAge(3, function(err, titleHighestAge){
-            if (err){
-                console.log("Cannot find the oldest articles!")
-                res.render('analytics.ejs', { top_revisions: titleHighestNoRev })
-            }else{
+            Revision.findTitleHighestAge(3, function(err, titleHighestAge){
+                if (err){
+                    console.log("Cannot find the oldest articles!")
+                    res.render('analytics.ejs', { top_revisions: titleHighestNoRev })
+                }else{
 
                     // post-process date data
                     var msecToYear = 31536000000;
@@ -105,27 +125,7 @@ module.exports.showAnalyticsPage = function(req, res)
                         firstRevDate = firstRevDate.toFixed(2);
                         titleHighestAge[i] = {title: titleHighestAge[i]._id, age: firstRevDate};
                     }
-
-                    // get user counts
-                    Promise.all([
-                        Revision.find({type: 'admin'}).count(),
-                        Revision.find({type: 'anon'}).count(),
-                        Revision.find({type: 'bot'}).count(),
-                        Revision.find({type: 'reg'}).count()
-                        ]).then(function(user_counts) {
-                            user_counts = JSON.stringify({
-                                admin: user_counts[0],
-                                anon: user_counts[1],
-                                bot: user_counts[2],
-                                reg: user_counts[3]
-                            });
-
-                            console.log(user_counts);
-                            res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge, user_counts: user_counts})
-                        }).catch(function(err) {
-                            console.log("Cannot count users");
-                            res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge})
-                        })
+                    res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge})
 
                 }
             })

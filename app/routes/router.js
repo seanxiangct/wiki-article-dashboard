@@ -13,4 +13,7 @@ router.post('/signIn', controller.signIn);
 router.get('/analytics', controller.showAnalyticsPage);
 //MJ router.post('/analytics', genre_controller.genre_create_post);
 
+// data acquisition routes
+router.get('/userCounts', controller.getUserCounts)
+
 module.exports = router;
