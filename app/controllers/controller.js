@@ -1,7 +1,7 @@
 const Revision = require("../models/revision");
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-const promise = require('bluebird');
+const Promise = require('bluebird');
 
 // landing page functions
 
@@ -38,10 +38,10 @@ module.exports.signUp = function(req, res)
 //            data.psw = hash;
 //        });
 //    });
-    
-    User.save_user_data(data, function(err, result){
 
-        if (err) {
+User.save_user_data(data, function(err, result){
+
+    if (err) {
             // error code 11000: duplicate unique key
             if (err.code == 11000) {
                 req.flash('danger', 'User already exists!');
@@ -62,7 +62,7 @@ module.exports.signIn = function(req, res)
     };
     
     User.signIn(data, function(err, result){
-        
+
         if (err) {
             console.log('Cannot sign in with error code' + err);
         } else {
@@ -79,21 +79,52 @@ module.exports.signIn = function(req, res)
     })
 }
 
+module.exports.getUserCounts = function(req, res)
+{
+    Promise.all([
+        Revision.find({type: 'admin'}).count(),
+        Revision.find({type: 'anon'}).count(),
+        Revision.find({type: 'bot'}).count(),
+        Revision.find({type: 'reg'}).count()
+        ]).then(function(user_counts) {
+            user_counts = {
+                'Admin': user_counts[0],
+                'Anonymous': user_counts[1],
+                'Bot': user_counts[2],
+                'Regular': user_counts[3]
+            };
+            res.json(user_counts)
+        }).catch(function(err) {
+            console.log("Cannot count users");
+        });
+}
+
+module.exports.countByYearAndType = function(req, res)
+{
+    Revision.findByYearAndType()
+    .catch(function(err) {
+        console.log("Cannot count users");
+    })
+    .then(function(result) {
+        console.log(result);
+    })}
 
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)
 {
     Revision.findTitleHighestNoRev(3, function(err, titleHighestNoRev){
         if (err){
-			console.log("Cannot find the most revised articles!");
+            console.log("Cannot find the most revised articles!");
             res.redirect('/');
-		}else{
-            
+        }else{
+
             Revision.findTitleHighestAge(3, function(err, titleHighestAge){
                 if (err){
+                    console.log("Cannot find the oldest articles!")
                     res.render('analytics.ejs', { top_revisions: titleHighestNoRev })
-			        console.log("Cannot find the oldest articles!")
-		        }else{
+                }else{
+
+                    // post-process date data
                     var msecToYear = 31536000000;
                     for (let i = 0, size = titleHighestAge.length; i < size; i++)
                     {   
@@ -105,9 +136,10 @@ module.exports.showAnalyticsPage = function(req, res)
                         titleHighestAge[i] = {title: titleHighestAge[i]._id, age: firstRevDate};
                     }
                     res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge})
+
                 }
             })
-		}
+        }
     })
 }
 

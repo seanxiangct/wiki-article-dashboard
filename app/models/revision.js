@@ -1,7 +1,8 @@
 /**
  * Revision schema
  */
-var mongoose = require('./db')
+const mongoose = require('./db');
+const Promise = require('bluebird');
 
 var RevisionSchema = new mongoose.Schema(
 		{
@@ -13,7 +14,7 @@ var RevisionSchema = new mongoose.Schema(
 		{
 		 	versionKey: false
 		}
-	)
+	);
 
 
 // find the latest revision of an article 
@@ -43,12 +44,8 @@ RevisionSchema.statics.findTitleLowestNoRev = function(number, callback){
 	.exec(callback)
 }
 
-// retrive the number of users for each type
-RevisionSchema.statics.countAllUsers = function (callback) {
-//    return this.aggregate()
-//    .group({
-//        'user'
-//    })
+RevisionSchema.statics.countAdmin = function (callback) {
+	return this.find({type: 'admin'}).count().exec(callback)
 }
 
 
@@ -63,6 +60,23 @@ RevisionSchema.statics.findTitleHighestAge = function(number, callback){
 	.sort({'firstRevision':1})
 	.limit(number)
 	.exec(callback)
+}
+
+RevisionSchema.statics.findByYearAndType = function()
+{
+	return Revision.aggregate(
+        [
+            {
+                $group : {
+                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
+                   count: { $sum: 1 }
+                }
+            },
+            {
+                $sort : { '_id.year': 1, 'user_type': 1 }
+            }
+        ]
+    )
 }
 
 
