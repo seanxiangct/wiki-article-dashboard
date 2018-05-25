@@ -11,6 +11,8 @@ router.post('/signIn', controller.signIn);
 
 // analytics page routes
 router.get('/analytics', controller.showAnalyticsPage);
-//MJ router.post('/analytics', genre_controller.genre_create_post);
+router.get('/numrevision', controller.numRevision);
+//router.get('/popular', controller.numPopular);
+router.get('/age', controller.numAge);
 
 module.exports = router;

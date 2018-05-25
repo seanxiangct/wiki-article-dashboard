@@ -1,14 +1,14 @@
 
-        <!-- Example row of columns -->
-        <div class="row">
+<div id="Revision">  
+    <h2>Number of revisions</h2>
+        <label for="numRevision">Show </label>
+        <input id="numRevision" type="number" name="numArticle" min="1" max="100" value="3">
+        <b>results</b>
+        <button id="okay1">OK</button>
+
+        <div id="numRevisionResult" class="row">
             <div class="col-md-6">
-                <h3>Articles with highest number of revisions</h3>
-                <form method="post">
-                    <label for="highRev">Show </label>
-                    <input id="highRev" type="number" name="numArticle" min="1" max="100" value="3">
-                    <b>results</b>
-                    <input type="submit" value="OK">
-                </form>
+                <h4>Articles with highest number of revisions</h4>
                 <% for (let i = 0, size = top_revisions.length; i < size; i++) {%>
                     <p>
                         <%= top_revisions[i]._id%> : <%= top_revisions[i].numOfEdits%>
@@ -16,23 +16,37 @@
                 <% } %>
             </div>
             <div class="col-md-6">
-                <h3>Articles with lowest number of revisions</h3>
+                <h4>Articles with lowest number of revisions</h4>
+            </div>
+        </div>
+</div>
+<div id="popular">  
+        <h2>Popularity</h2>
+        <label for="numPopular">Show </label>
+        <input id="numPopular" type="number" name="numArticle" min="1" max="100" value="3">
+        <b>results</b>
+        <button id="okay2">OK</button>
+        <div id="numPopularResult" class="row">
+            <div class="col-md-6">
+                <h4>Articles with largest group of registered users</h4>
+               
+            </div>
+            <div class="col-md-6">
+                <h4>Articles with smallest group of registered users</h4>
                
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Articles with largest group of registered users</h3>
-               
-            </div>
-            <div class="col-md-6">
-                <h3>Articles with smallest group of registered users</h3>
-               
-            </div>
-        </div>
-        <div class="row">
+</div>
+
+<div id="history"> 
+        <h2>History</h2>
+        <label for="numHistory">Show </label>
+        <input id="numHistory" type="number" name="numArticle" min="1" max="100" value="3">
+        <b>results</b>
+        <button id="okay3">OK</button> 
+        <div id="numHistoryResult" class="row">
                 <div class="col-md-6">
-                    <h3>Articles with longest history (measured by age)</h3>
+                    <h4>Articles with longest history (measured by age)</h4>
                     <% for (let i = 0, size = oldest_articles.length; i < size; i++) {%>
                         <p>
                             <%= oldest_articles[i].title%> : <%= oldest_articles[i].age%>
@@ -41,13 +55,15 @@
                    
                 </div>
                 <div class="col-md-6">
-                    <h3>Articles with shortest history (measured by age)</h3>
+                    <h4>Articles with shortest history (measured by age)</h4>
                    
                 </div>
             </div>
-
+</div>
         <hr>
 
         <footer>
             <p>&copy; 2016 Company, Inc.</p>
         </footer>
+
+        
