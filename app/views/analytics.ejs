@@ -2,107 +2,114 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <title>Wiki Analytics</title>
+	<title>Wiki Analytics</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap core CSS -->
+	<link href="dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="css/analytics.css" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="css/analytics.css" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>
-        window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')
-    </script>
-    <!-- <script src="js/ejs.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>
+		window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')
+	</script>
+	<!-- <script src="js/ejs.js"></script> -->
 
 </head>
 
 <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Wiki Analytics</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">Wiki Analytics</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
 
-            </div>
-            <!--/.navbar-collapse -->
-        </div>
-    </nav>
+			</div>
+			<!--/.navbar-collapse -->
+		</div>
+	</nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <div class="container">
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+		<div class="container">
 
-            <!--      place google chart here      -->
-            <h1>Overview</h1>
-            <div id="chart">
-
-            </div>
-            <div>
-                <a id="group_button" class="btn btn-primary btn-lg" role="button">Group Analysis&raquo;</a> 
-                <a id="individual_button" class="btn btn-primary btn-lg" role="button">Individual Analysis&raquo;</a>
-                <a id="author_button" class="btn btn-primary btn-lg" role="button">Author Analysis &raquo;</a>
-            </div>
-        </div>
-    </div>
-    <div id="analysis" class="container">
-        <%- include('templates/group.ejs'); %>
-    </div>  
-
-    <!-- /container -->
-    <% var group_html = include('templates/group.ejs'); %>
-    <% var indiv_html = include('templates/individual.ejs'); %>
-    <% var author_html = include('templates/author.ejs'); %>
-
-    <script>
-        $(document).ready(function(){
-            $("#group_button").click(function(){
-                $("#analysis").html(`<%- group_html %>`);
-
-            });
-            $("#individual_button").click(function(){
-                $("#analysis").html(`<%- indiv_html %>`);     
-            });
-            $("#author_button").click(function(){
-                $("#analysis").html(`<%- author_html %>`);     
-            });    
+			<!--      place google chart here      -->
+			<h1>Overview</h1>
+			<div class="row">
+				<div class="col-md-6">
+					<div id="chart"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div>
+					<a id="group_button" class="btn btn-primary btn-lg" role="button">Group Analysis&raquo;</a> 
+					<a id="individual_button" class="btn btn-primary btn-lg" role="button">Individual Analysis&raquo;</a>
+					<a id="author_button" class="btn btn-primary btn-lg" role="button">Author Analysis &raquo;</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-        });
 
-    </script> 
+	<div id="analysis" class="container">
+		<%- include('templates/group.ejs'); %>
+	</div>  
 
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+	<!-- /container -->
+	<% var group_html = include('templates/group.ejs'); %>
+	<% var indiv_html = include('templates/individual.ejs'); %>
+	<% var author_html = include('templates/author.ejs'); %>
 
-    <!-- Google charts scripts -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		$(document).ready(function(){
+			$("#group_button").click(function(){
+				$("#analysis").html(`<%- group_html %>`);
 
-    <!-- local script -->
-    <script src="js/analytics.js"></script>
+			});
+			$("#individual_button").click(function(){
+				$("#analysis").html(`<%- indiv_html %>`);     
+			});
+			$("#author_button").click(function(){
+				$("#analysis").html(`<%- author_html %>`);     
+			});    
 
-    <script>
 
-    </script>
+		});
+
+	</script> 
+
+	<!-- Bootstrap core JavaScript -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+	<!-- Google charts scripts -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+	<!-- local script -->
+	<script src="js/analytics.js"></script>
+
+	<script>
+
+	</script>
 
 </body>
 

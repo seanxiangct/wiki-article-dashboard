@@ -1,7 +1,7 @@
 const Revision = require("../models/revision");
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-const promise = require('bluebird');
+const Promise = require('bluebird');
 
 // landing page functions
 
@@ -88,16 +88,26 @@ module.exports.getUserCounts = function(req, res)
         Revision.find({type: 'reg'}).count()
         ]).then(function(user_counts) {
             user_counts = {
-                'admin': user_counts[0],
-                'anon': user_counts[1],
-                'bot': user_counts[2],
-                'reg': user_counts[3]
+                'Admin': user_counts[0],
+                'Anonymous': user_counts[1],
+                'Bot': user_counts[2],
+                'Regular': user_counts[3]
             };
             res.json(user_counts)
         }).catch(function(err) {
             console.log("Cannot count users");
         });
 }
+
+module.exports.countByYearAndType = function(req, res)
+{
+    Revision.findByYearAndType()
+    .catch(function(err) {
+        console.log("Cannot count users");
+    })
+    .then(function(result) {
+        console.log(result);
+    })}
 
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)

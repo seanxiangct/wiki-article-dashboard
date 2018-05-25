@@ -1,12 +1,11 @@
 google.charts.load('current', {packages: ['corechart']});
 
-var options = {'title':"test",
-        'width':400,
-        'height':300};
 
 function drawPie(data)
 {
-    console.log(data);
+    var options = {'title':"Revision number distribution by user type",
+            'width': 500,
+            'height': 400};
     graphData = new google.visualization.DataTable();
     // defineing data table columns
     // addColumn(data type, column name)
@@ -21,10 +20,23 @@ function drawPie(data)
     chart.draw(graphData, options);
 }
 
+function drawBar(data)
+{
+    console.log(data)
+    var options = {'title':"Revision number by year and by user type",
+            'width': 500,
+            'height': 400};
+
+}
+
 $(document).ready(function() {
 
-    $.getJSON('/userCounts',null, function(result) {
-        drawPie(result);
+    // $.getJSON('/userCounts',null, function(result) {
+    //     drawPie(result);
+    // });
+
+    $.getJSON('/revisionByYear',null, function(result) {
+        drawBar(result);
     });
 
 })

@@ -48,22 +48,6 @@ RevisionSchema.statics.countAdmin = function (callback) {
 	return this.find({type: 'admin'}).count().exec(callback)
 }
 
-// retrive the number of users for each type
-RevisionSchema.statics.countAllUsers = function () {
-
-	Promise.all([
-			Revision.find({type: 'admin'}).count(),
-			Revision.find({type: 'anon'}).count(),
-			Revision.find({type: 'bot'}).count(),
-			Revision.find({type: 'reg'}).count()
-		]).then(function(result) {
-			console.log(result)
-			// return [].concat.apply([],result)
-		}).catch(function(err) {
-			console.log(err)
-		})
-}
-
 
 // find the titles with the highest age
 RevisionSchema.statics.findTitleHighestAge = function(number, callback){
@@ -76,6 +60,23 @@ RevisionSchema.statics.findTitleHighestAge = function(number, callback){
 	.sort({'firstRevision':1})
 	.limit(number)
 	.exec(callback)
+}
+
+RevisionSchema.statics.findByYearAndType = function()
+{
+	return Revision.aggregate(
+        [
+            {
+                $group : {
+                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
+                   count: { $sum: 1 }
+                }
+            },
+            {
+                $sort : { '_id.year': 1, 'user_type': 1 }
+            }
+        ]
+    )
 }
 
 
