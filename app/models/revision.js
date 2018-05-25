@@ -4,13 +4,16 @@
 var mongoose = require('./db')
 
 var RevisionSchema = new mongoose.Schema(
-		{title: String, 
-		 timestamp:Date, 
-		 user:String, 
-		 anon:String},
-		 {
+		{
+			title: String, 
+		 	timestamp:Date, 
+		 	user:String, 
+		 	anon:String
+		},
+		{
 		 	versionKey: false
-		})
+		}
+	)
 
 
 // find the latest revision of an article 

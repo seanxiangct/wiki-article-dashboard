@@ -17,7 +17,6 @@
 
     <!-- Custom styles for this template -->
     <link href="css/analytics.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -26,11 +25,11 @@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <a class="navbar-brand" href="/">Wiki Analytics</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -43,7 +42,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
-            
+
             <!--      place google chart here      -->
             <h1>Hello, world!</h1>
             <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
@@ -57,17 +56,17 @@
             <div class="col-md-4">
                 <h2>Articles with highest number of revisions</h2>
                 <% for (let i = 0, size = top_revisions.length; i < size; i++) {%>
-                    <p>
-                        <%= top_revisions[i]._id%> : <%= top_revisions[i].numOfEdits%>
-                    </p>
+                <p>
+                    <%= top_revisions[i]._id%> : <%= top_revisions[i].numOfEdits%>
+                </p>
                 <% } %>
             </div>
             <div class="col-md-4">
                 <h2>Articles with longest history (measured by age)</h2>
                 <% for (let i = 0, size = oldest_articles.length; i < size; i++) {%>
-                    <p>
-                        <%= oldest_articles[i].title%> : <%= oldest_articles[i].age%> years
-                    </p>
+                <p>
+                    <%= oldest_articles[i].title%> : <%= oldest_articles[i].age%> years
+                </p>
                 <% } %>
             </div>
             <div class="col-md-4">
@@ -86,15 +85,17 @@
     <!-- /container -->
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
+    <!-- Bootstrap core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>
-        window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')
-    </script>
-    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+    <!-- Google charts scripts -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- local script -->
+    <script src="js/analytics.js"></script>
 </body>
 
 </html>

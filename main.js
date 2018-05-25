@@ -69,7 +69,7 @@ app.use(expressValidator({
 // home route
 app.use('/',routes);
 app.listen(3000, function () {
-	  console.log('Revision app listening on port 3000!')
+	  console.log('Wiki Analytics listening on port 3000!')
 	});
 	
 module.exports = app;

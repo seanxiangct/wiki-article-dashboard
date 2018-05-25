@@ -15,7 +15,6 @@ $(function() {
         $(this).addClass('active');
         e.preventDefault();
     });
-    
 
 });
 
@@ -35,3 +34,5 @@ function validate_password()
 
 psw.onchange = validate_password;
 repeat.onkeyup = validate_password;
+
+
