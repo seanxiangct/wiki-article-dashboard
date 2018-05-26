@@ -80,13 +80,3 @@ function drawBar()
 
     });
 }
-
-$(document).ready(function() {
-
-    // $.getJSON('/userCounts',null, function(result) {
-    //     drawPie(result);
-    // });
-
-    
-
-})
