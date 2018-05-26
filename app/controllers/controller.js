@@ -102,12 +102,12 @@ module.exports.getUserCounts = function(req, res)
 module.exports.countByYearAndType = function(req, res)
 {
     Revision.findByYearAndType()
-    .catch(function(err) {
+    .then(function(result) {
+        res.json(result);
+    }).catch(function(err) {
         console.log("Cannot count users");
     })
-    .then(function(result) {
-        console.log(result);
-    })}
+}
 
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)
