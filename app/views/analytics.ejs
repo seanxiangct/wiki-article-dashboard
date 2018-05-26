@@ -93,7 +93,30 @@
 			$("#author_button").click(function(){
 				$("#analysis").html(`<%- author_html %>`);     
 			});    
-
+            $("#okay1").click(function(){
+                var parameter = {number: $("#numRevision").val()};
+                console.log(parameter);
+                var jqxhr = $.get( '/numrevision',parameter);
+                jqxhr.done(function(result) {
+                    $('#numRevisionResult').html(result);
+                });
+                jqxhr.fail(function(jqXHR){
+                    $('#numRevisionResult').html("Response status:" + jqXHR.status)
+                    //console.log("Response status:" + jqXHR.status)
+                });
+            }); 
+            $("#okay3").click(function(){
+                var parameter = {number: $("#numHistory").val()};
+                console.log(parameter);
+                var jqxhr = $.get( '/age',parameter);
+                jqxhr.done(function(result) {
+                    $('#numHistoryResult').html(result);
+                });
+                jqxhr.fail(function(jqXHR){
+                    $('#numHistoryResult').html("Response status:" + jqXHR.status)
+                    //console.log("Response status:" + jqXHR.status)
+                });
+            }); 
 
 		});
 

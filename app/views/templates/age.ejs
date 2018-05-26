@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-md-6">
+        <h4>Articles with longest history (measured by age)</h4>
+            <% for (let i = 0, size = oldest_articles.length; i < size; i++) {%>
+            <p>
+            <%= oldest_articles[i].title%> : <%= oldest_articles[i].age%>
+            </p>
+            <% } %>
+                    
+    </div>
+    <div class="col-md-6">
+        <h4>Articles with shortest history (measured by age)</h4>
+                       
+    </div>
+</div>
