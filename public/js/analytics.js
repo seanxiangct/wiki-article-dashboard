@@ -8,9 +8,11 @@ function drawPie()
 {
     $.getJSON('/userCounts',null, function(data) {
 
-        let options = {'title':"Revision number distribution by user type",
-                'width': 400,
-                'height': 300};
+        let options = {
+                title: "Revision number distribution by user type",
+                width: 400,
+                height: 300
+            };
         graphData = new google.visualization.DataTable();
         // defineing data table columns
         // addColumn(data type, column name)
@@ -32,10 +34,17 @@ function drawBar()
     $.getJSON('/revisionByYear',null, function(data) {
 
         let options = {
-            'title':"Revision number by year and by user type",
-            'width': 400,
-            'height': 300,
-            'backgroundColor': '#eeeeee'
+            title: "Revision number by year",
+            width: 950,
+            height: 300,
+            hAxis: {
+                title: 'Year',
+                minValue: 2001,
+                maxValue: 2018
+            },
+            vAxis: {
+                title: 'Revisions'
+            }
         };
 
         let data_matrix = new Array(18);
@@ -51,7 +60,7 @@ function drawBar()
         {
             if (typeof data_matrix[row_index][0] === 'undefined')
             {
-                data_matrix[row_index][0] = data[i]._id.year;
+                data_matrix[row_index][0] = data[i]._id.year.toString();
             }
 
             if (data[i]._id.user_type == 'admin')
@@ -79,4 +88,18 @@ function drawBar()
 
 
     });
+}
+
+function show_bar()
+{
+    console.log('bar')
+    // document.getElementById('bar-chart')
+    $('#bar-chart').style.display = '';
+    $('#pie-chart').style.display = 'none';
+}
+
+function show_pie()
+{
+    $('#bar-chart').style.display = 'none';
+    $('#pie-chart').style.display = '';
 }
