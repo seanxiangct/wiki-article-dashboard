@@ -112,34 +112,81 @@ module.exports.countByYearAndType = function(req, res)
 // Analytics page functions
 module.exports.showAnalyticsPage = function(req, res)
 {
-    Revision.findTitleHighestNoRev(3, function(err, titleHighestNoRev){
-        if (err){
-            console.log("Cannot find the most revised articles!");
-            res.redirect('/');
-        }else{
-
-            Revision.findTitleHighestAge(3, function(err, titleHighestAge){
-                if (err){
-                    console.log("Cannot find the oldest articles!")
-                    res.render('analytics.ejs', { top_revisions: titleHighestNoRev })
-                }else{
-
-                    // post-process date data
-                    var msecToYear = 31536000000;
-                    for (let i = 0, size = titleHighestAge.length; i < size; i++)
-                    {   
-                        // findTitleHighestAge returns title and firstRevision (timestamp as a string)
-                        // subtracting current date time from firstRevision returns difference in milliseconds
-                        // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
-                        let firstRevDate = (new Date() - new Date(titleHighestAge[i].firstRevision)) / msecToYear;
-                        firstRevDate = firstRevDate.toFixed(2);
-                        titleHighestAge[i] = {title: titleHighestAge[i]._id, age: firstRevDate};
-                    }
-                    res.render('analytics.ejs', {top_revisions: titleHighestNoRev, oldest_articles: titleHighestAge})
-
-                }
-            })
+    var highestRevRes = [];
+    var lowestRevRes = [];
+    var highestAgeRes = [];
+    var lowestAgeRes = [];
+    Promise.resolve(Revision.findTitleHighestNoRev(3))
+    .then(undefined, function(err) {
+        console.log(err);
+        highestRevRes.push({_id: "Cannot find the most revised articles!"})
+    })
+    .then(function(titleHighestNoRev) {
+        for (let i = 0, size = titleHighestNoRev.length; i < size; i++) { 
+        highestRevRes[i] = titleHighestNoRev[i];
         }
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleLowestNoRev(3));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        lowestRevRes.push({_id: "Cannot find the least revised articles!"})
+    })
+    .then(function(titleLowestNoRev) {
+        for (let i = 0, size = titleLowestNoRev.length; i < size; i++) { 
+        lowestRevRes[i] = titleLowestNoRev[i];
+        }
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleHighestAge(3));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        highestAgeRes.push({title: "Cannot find the oldest articles!"});
+    })
+    .then(function(titleHighestAge) {
+        var msecToYear = 31536000000;
+        for (let i = 0, size = titleHighestAge.length; i < size; i++) {   
+            // findTitleHighestAge returns title and firstRevision (timestamp as a string)
+            // subtracting current date time from firstRevision returns difference in milliseconds
+            // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
+            let firstRevDate = (new Date() - new Date(titleHighestAge[i].firstRevision)) / msecToYear;
+            firstRevDate = firstRevDate.toFixed(2);
+            highestAgeRes[i] = {title: titleHighestAge[i]._id, age: firstRevDate};
+        }
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleLowestAge(3));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        lowestAgeRes.push({title: "Cannot find the youngest articles!"});
+    })
+    .then(function(titleLowestAge) {
+        var msecToYear = 31536000000;
+        for (let i = 0, size = titleLowestAge.length; i < size; i++) {   
+            // findTitleLowestAge returns title and firstRevision (timestamp as a string)
+            // subtracting current date time from firstRevision returns difference in milliseconds
+            // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
+            let firstRevDate = (new Date() - new Date(titleLowestAge[i].firstRevision)) / msecToYear;
+            firstRevDate = firstRevDate.toFixed(2);
+            lowestAgeRes[i] = {title: titleLowestAge[i]._id, age: firstRevDate};
+        }
+    })
+    .then(function() {
+        console.log(highestRevRes);
+        console.log(lowestRevRes);
+        console.log(highestAgeRes);
+        console.log(lowestAgeRes);
+
+        res.render('analytics.ejs', {top_revisions: highestRevRes, bottom_revisions: lowestRevRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
     })
 }
 
@@ -147,47 +194,82 @@ module.exports.numRevision = function(req, res)
 {
     var number = Number(req.query.number);
     console.log(number);
-    Revision.findTitleHighestNoRev(number, function(err, titleHighestNoRev){
-        if (err){
-			console.log("Cannot find the most revised articles!");
-            res.render('Cannot find the most revised articles!');
-            console.log(err);
-		}else{
-            Revision.findTitleLowestNoRev(number, function(err, titleLowestNoRev){
-                if (err){
-                    console.log("Cannot find the least revised articles!");
-                    res.render('templates/numrevision.ejs', { top_revisions: titleHighestNoRev });
-                }else {
-                    res.render('templates/numrevision.ejs', { top_revisions: titleHighestNoRev, bottom_revisions: titleLowestNoRev });
-                }
-            });
-            
+    var highestRevRes = [];
+    var lowestRevRes = [];
+
+    Promise.resolve(Revision.findTitleHighestNoRev(number))
+    .then(undefined, function(err) {
+        console.log(err);
+        highestRevRes.push({_id: "Cannot find the most revised articles!"})
+    })
+    .then(function(titleHighestNoRev) {
+        for (let i = 0, size = titleHighestNoRev.length; i < size; i++) { 
+        highestRevRes[i] = titleHighestNoRev[i];
         }
-    });
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleLowestNoRev(number));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        lowestRevRes.push({_id: "Cannot find the least revised articles!"})
+    })
+    .then(function(titleLowestNoRev) {
+        for (let i = 0, size = titleLowestNoRev.length; i < size; i++) { 
+        lowestRevRes[i] = titleLowestNoRev[i];
+        }
+    })
+    .then(function() {
+        res.render('templates/numrevision.ejs', { top_revisions: highestRevRes, bottom_revisions: lowestRevRes });
+    })
 }
 
 module.exports.numAge = function(req, res)
 {
     var number = Number(req.query.number);
     console.log(number);
-    Revision.findTitleHighestAge(number, function(err, titleHighestAge){
-        if (err){
-			console.log("Cannot find the oldest articles!");
-            res.render('Cannot find the oldest articles!');
-            console.log(err);
-		}else{
-            var msecToYear = 31536000000;
-            for (let i = 0, size = titleHighestAge.length; i < size; i++)
-            {   
-                // findTitleHighestAge returns title and firstRevision (timestamp as a string)
-                // subtracting current date time from firstRevision returns difference in milliseconds
-                // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
-                let firstRevDate = (new Date() - new Date(titleHighestAge[i].firstRevision)) / msecToYear;
-                firstRevDate = firstRevDate.toFixed(2);
-                titleHighestAge[i] = {title: titleHighestAge[i]._id, age: firstRevDate};
-            }
-            res.render('templates/age.ejs', {oldest_articles: titleHighestAge});
+    var highestAgeRes = [];
+    var lowestAgeRes = [];
+
+    Promise.resolve(Revision.findTitleHighestAge(number))
+    .then(undefined, function(err) {
+        console.log(err);
+        highestAgeRes.push({title: "Cannot find the oldest articles!"});
+    })
+    .then(function(titleHighestAge) {
+        var msecToYear = 31536000000;
+        for (let i = 0, size = titleHighestAge.length; i < size; i++) {   
+            // findTitleHighestAge returns title and firstRevision (timestamp as a string)
+            // subtracting current date time from firstRevision returns difference in milliseconds
+            // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
+            let firstRevDate = (new Date() - new Date(titleHighestAge[i].firstRevision)) / msecToYear;
+            firstRevDate = firstRevDate.toFixed(2);
+            highestAgeRes[i] = {title: titleHighestAge[i]._id, age: firstRevDate};
         }
     })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleLowestAge(number));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        lowestAgeRes.push({title: "Cannot find the youngest articles!"});
+    })
+    .then(function(titleLowestAge) {
+        var msecToYear = 31536000000;
+        for (let i = 0, size = titleLowestAge.length; i < size; i++) {   
+            // findTitleLowestAge returns title and firstRevision (timestamp as a string)
+            // subtracting current date time from firstRevision returns difference in milliseconds
+            // convert to years by dividing by 1000 milliseconds * 60 sec * 60 mins * 24 hrs * 365 days
+            let firstRevDate = (new Date() - new Date(titleLowestAge[i].firstRevision)) / msecToYear;
+            firstRevDate = firstRevDate.toFixed(2);
+            lowestAgeRes[i] = {title: titleLowestAge[i]._id, age: firstRevDate};
+        }
+    })
+    .then(function() {
+        res.render('templates/age.ejs', {oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
+    })
 }
-
