@@ -14,7 +14,7 @@ router.get('/analytics', controller.showAnalyticsPage);
 router.get('/numrevision', controller.numRevision);
 //router.get('/popular', controller.numPopular);
 router.get('/age', controller.numAge);
-router.get('/individual', control.individualPage);
+router.get('/individual', controller.individualPage);
 
 
 // data acquisition routes

@@ -4,8 +4,11 @@
             <h3>Select an article</h3>
                 <label for="titlelist">Title:  </label>
                 <select id="titlelist">
-                        <option value="All">All</option>
-        
+                        <% for (let i = 0, size = titleOptions.length; i < size; i++) {%>
+                            <option>
+                                <%= titleOptions[i] %>
+                            </option>
+                        <% } %>    
                 </select>
                 <button id="titleokay">OK</button>
         </div>

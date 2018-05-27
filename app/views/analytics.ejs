@@ -72,7 +72,6 @@
 
 	<!-- /container -->
 	<% var group_html = include('templates/group.ejs'); %>
-	<% var indiv_html = include('templates/individual.ejs'); %>
 	<% var author_html = include('templates/author.ejs'); %>
 
 	<script>
@@ -81,7 +80,7 @@
 				$("#analysis").html(`<%- group_html %>`);
 			});
             $("#tabs").on('click', '#individual_button', function(){
-                $("#analysis").html(`<%- indiv_html %>`);
+                $("#analysis").load('/individual');
             });
 			$("#author_button").click(function(){
 				$("#analysis").html(`<%- author_html %>`);     

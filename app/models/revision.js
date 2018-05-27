@@ -89,7 +89,7 @@ RevisionSchema.statics.findByYearAndType = function()
 }
 
 // find distinct title names
-RevisionSchema.static.findTitleNames = function()
+RevisionSchema.statics.findTitleNames = function()
 {
 	return this.distinct('title')
 }

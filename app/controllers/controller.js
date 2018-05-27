@@ -274,3 +274,22 @@ module.exports.numAge = function(req, res)
     })
 }
 
+module.exports.individualPage = function(req, res) 
+{
+    var titleList = [];
+    Promise.resolve(Revision.findTitleNames())
+    .then(undefined, function(err) {
+        console.log(err);
+        
+    })
+    .then(function(distinctTitles) {
+        for (let i = 0, size = distinctTitles.length; i < size; i++) { 
+        titleList[i] = distinctTitles[i];
+        }
+        console.log(titleList);
+    })
+    .then(function() {
+        res.render('templates/individual.ejs', {titleOptions : titleList});
+    })
+    
+}
