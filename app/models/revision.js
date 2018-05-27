@@ -28,20 +28,20 @@ RevisionSchema.statics.findTitleLatestRev = function(title, callback)
 
 
 // find the highest number of revisions
-RevisionSchema.statics.findTitleHighestNoRev = function(number, callback){
+RevisionSchema.statics.findTitleHighestNoRev = function(number){
 	return this.aggregate()
 	.group({_id:"$title", numOfEdits: {$sum:1}})
 	.sort('-numOfEdits')
 	.limit(number)
-	.exec(callback)
+	.exec()
 }
 // find the lowest number of revisions
-RevisionSchema.statics.findTitleLowestNoRev = function(number, callback){
+RevisionSchema.statics.findTitleLowestNoRev = function(number){
 	return this.aggregate()
 	.group({_id:"$title", numOfEdits: {$sum:1}})
 	.sort('numOfEdits')
 	.limit(number)
-	.exec(callback)
+	.exec()
 }
 
 RevisionSchema.statics.countAdmin = function (callback) {
@@ -50,16 +50,25 @@ RevisionSchema.statics.countAdmin = function (callback) {
 
 
 // find the titles with the highest age
-RevisionSchema.statics.findTitleHighestAge = function(number, callback){
+RevisionSchema.statics.findTitleHighestAge = function(number){
 	return this.aggregate()
 	// sort prior to $group stage so that $first is meaningful
 	.sort({'timestamp':1})
-	//set a reasonable limit to avoid query execution failure
-	.limit(1000)
 	.group({_id:"$title", firstRevision: {$first:"$timestamp"}})
 	.sort({'firstRevision':1})
 	.limit(number)
-	.exec(callback)
+	.exec()
+}
+
+// find the titles with the lowest age
+RevisionSchema.statics.findTitleLowestAge = function(number){
+	return this.aggregate()
+	// sort prior to $group stage so that $first is meaningful
+	.sort({'timestamp':1})
+	.group({_id:"$title", firstRevision: {$first:"$timestamp"}})
+	.sort({'firstRevision':-1})
+	.limit(number)
+	.exec()
 }
 
 RevisionSchema.statics.findByYearAndType = function()
