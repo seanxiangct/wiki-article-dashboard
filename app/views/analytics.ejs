@@ -62,7 +62,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div>
+				<div id="tabs">
 					<a id="group_button" class="btn btn-primary btn-lg" role="button">Group Analysis&raquo;</a> 
 					<a id="individual_button" class="btn btn-primary btn-lg" role="button">Individual Analysis&raquo;</a>
 					<a id="author_button" class="btn btn-primary btn-lg" role="button">Author Analysis &raquo;</a>
@@ -86,15 +86,14 @@
 		$(document).ready(function(){
 			$("#group_button").click(function(){
 				$("#analysis").html(`<%- group_html %>`);
-
 			});
-			$("#individual_button").click(function(){
-				$("#analysis").html(`<%- indiv_html %>`);     
-			});
+            $("#tabs").on('click', '#individual_button', function(){
+                $("#analysis").html(`<%- indiv_html %>`);
+            });
 			$("#author_button").click(function(){
 				$("#analysis").html(`<%- author_html %>`);     
 			});    
-            $("#okay1").click(function(){
+            $(document).on('click', '#okay1', function(){
                 var parameter = {number: $("#numRevision").val()};
                 console.log(parameter);
                 var jqxhr = $.get( '/numrevision',parameter);
@@ -106,7 +105,7 @@
                     //console.log("Response status:" + jqXHR.status)
                 });
             }); 
-            $("#okay3").click(function(){
+            $(document).on('click', '#okay3', function(){
                 var parameter = {number: $("#numHistory").val()};
                 console.log(parameter);
                 var jqxhr = $.get( '/age',parameter);
@@ -118,6 +117,12 @@
                     //console.log("Response status:" + jqXHR.status)
                 });
             }); 
+
+            $(document).on('click', '#titleokay', function(){
+                var titleInput = {titleInput: $("#titlelist").val()};
+                console.log("okay clicked");
+
+            })
 
 		});
 

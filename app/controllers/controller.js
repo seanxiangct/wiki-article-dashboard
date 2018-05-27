@@ -273,3 +273,4 @@ module.exports.numAge = function(req, res)
         res.render('templates/age.ejs', {oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
     })
 }
+

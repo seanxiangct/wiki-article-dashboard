@@ -15,8 +15,10 @@ router.get('/numrevision', controller.numRevision);
 //router.get('/popular', controller.numPopular);
 router.get('/age', controller.numAge);
 
+
 // data acquisition routes
 router.get('/userCounts', controller.getUserCounts);
 router.get('/revisionByYear', controller.countByYearAndType);
+
 
 module.exports = router;
