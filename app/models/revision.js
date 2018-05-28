@@ -99,7 +99,15 @@ RevisionSchema.statics.totalNumRev = function(title)
 	return this.find({title: title}).count()
 }
 
-
+// find the titles with the lowest age
+RevisionSchema.statics.topRevisionRegUsers = function(title){
+	return this.aggregate()
+	.match({title: title, type: 'reg'})
+	.group({_id:"$user", numOfEdits: {$sum:1}})
+	.sort('-numOfEdits')
+	.limit(5)
+	.exec()
+}
 
 // model is a schema binded with a collection
 // Schema.model(model_name, schema variable, collection name)
