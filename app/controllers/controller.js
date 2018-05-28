@@ -368,14 +368,30 @@ module.exports.individualPage = function(req, res)
 module.exports.individualResult = function(req,res)
 {
     var title = req.query.title;
+    var numRev;
+    var topUsers = [];
     console.log(title);
     Promise.resolve(Revision.totalNumRev(title))
     .then(undefined, function(err) {
         console.log(err);  
     })
-    .then(function(numRev) {
-        var numRev = numRev;
-        console.log(numRev);
-        res.render('templates/individualresult.ejs', {title: title, numRev: numRev});
+    .then(function(totalNumRev) {
+        numRev = totalNumRev;
+        console.log(numRev); 
+    })
+    .then(function(){
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.topRevisionRegUsers(title));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+    })
+    .then(function(top5RegUsers) {
+        for (let i = 0, size = top5RegUsers.length; i < size; i++) { 
+        topUsers[i] = top5RegUsers[i];
+        }
+        console.log(topUsers);
+        res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers});
     })
 }

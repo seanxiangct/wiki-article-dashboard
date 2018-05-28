@@ -5,3 +5,9 @@
 <p> Total number of revision: 
 <%= numRev %>
 </p>
+<p> Top 5 regular users who revised the article the most: </p>
+        <% for (let i = 0, size = topUsers.length; i < size; i++) {%>
+            <p>
+                <%= topUsers[i]._id %> (<%=topUsers[i].numOfEdits %>)
+            </p>
+        <% } %> 
