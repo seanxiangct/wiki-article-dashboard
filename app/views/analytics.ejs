@@ -77,6 +77,7 @@
 		$(document).ready(function(){
 			$("#group_button").click(function(){
 				$("#analysis").html(`<%- group_html %>`);
+				location.reload();
 			});
             $("#tabs").on('click', '#individual_button', function(){
                 $("#analysis").load('/individual');
@@ -95,6 +96,7 @@
                     //console.log("Response status:" + jqXHR.status)
                 });
             }); 
+
             $(document).on('click', '#okay3', function(){
                 var parameter = {number: $("#numHistory").val()};
                 var jqxhr = $.get( '/age',parameter);
@@ -123,16 +125,11 @@
             })
 
             $(document).on('click', '#option1', function(){
-
-            	// $('#bar-chart').before("<h3>Revision number by year</h2>");
 			    document.getElementById('bar-chart-container').style.display = '';
 			    document.getElementById('pie-chart-container').style.display = 'none';
             }); 
 
             $(document).on('click', '#option2', function(){
-			    // $('#bar-chart').style.display = 'none';
-			    // $('#pie-chart').style.display = '';
-            	// $('#pie-chart').before("<h3>Revision number distribution by user type</h2>");
 			    document.getElementById('bar-chart-container').style.display = 'none';
 			    document.getElementById('pie-chart-container').style.display = '';
             }); 
@@ -150,7 +147,7 @@
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 	<!-- local script -->
-	<script src="js/analytics.js"></script>
+	<script src="js/charts.js"></script>
 
 	<script>
 
