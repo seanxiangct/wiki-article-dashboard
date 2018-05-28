@@ -48,6 +48,29 @@ RevisionSchema.statics.countAdmin = function (callback) {
 	return this.find({type: 'admin'}).count().exec(callback)
 }
 
+// find the title with largest group of unique regular users
+RevisionSchema.statics.findTitleHighestUniqueUsers = function(number){
+	return this.aggregate()
+	.match({type:"reg"})
+	.group({_id:"$title", uniqueUsers:{$addToSet:"$user"}})
+	.unwind("uniqueUsers")
+	.group({_id:"$_id",noUniqueUsers:{$sum:1}})
+	.sort({"noUniqueUsers":-1})
+	.limit(number)
+	.exec()
+}
+
+// find the title with smallest group of unique regular users
+RevisionSchema.statics.findTitleLowestUniqueUsers = function(number){
+	return this.aggregate()
+	.match({type:"reg"})
+	.group({_id:"$title", uniqueUsers:{$addToSet:"$user"}})
+	.unwind("uniqueUsers")
+	.group({_id:"$_id",noUniqueUsers:{$sum:1}})
+	.sort({"noUniqueUsers":1})
+	.limit(number)
+	.exec()
+}
 
 // find the titles with the highest age
 RevisionSchema.statics.findTitleHighestAge = function(number){
@@ -99,7 +122,15 @@ RevisionSchema.statics.totalNumRev = function(title)
 	return this.find({title: title}).count()
 }
 
-
+// find the titles with the lowest age
+RevisionSchema.statics.topRevisionRegUsers = function(title){
+	return this.aggregate()
+	.match({title: title, type: 'reg'})
+	.group({_id:"$user", numOfEdits: {$sum:1}})
+	.sort('-numOfEdits')
+	.limit(5)
+	.exec()
+}
 
 // model is a schema binded with a collection
 // Schema.model(model_name, schema variable, collection name)

@@ -1,9 +1,17 @@
 
         <div class="col-md-6">
             <h4>Articles with largest group of registered users</h4>
-                
+            <% for (let i = 0, size = top_regUsers.length; i < size; i++) {%>
+                <p>
+                    <%= top_regUsers[i]._id%> : <%= top_regUsers[i].noUniqueUsers%>
+                </p>
+            <% } %>
         </div>
         <div class="col-md-6">
             <h4>Articles with smallest group of registered users</h4>
-                   
+            <% for (let i = 0, size = bottom_regUsers.length; i < size; i++) {%>
+                <p>
+                    <%= bottom_regUsers[i]._id%> : <%= bottom_regUsers[i].noUniqueUsers%>
+                </p>
+            <% } %>      
         </div>

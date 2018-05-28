@@ -6,7 +6,6 @@
         <input id="numRevision" type="number" name="numArticle" min="1" max="100" value="3">
         <b>results</b>
         <button id="okay1">OK</button>
-
         <div id="numRevisionResult" class="row">
             <div class="col-md-6">
                 <h4>Articles with highest number of revisions</h4>
@@ -36,11 +35,19 @@
     <div id="numPopularResult" class="row">
         <div class="col-md-6">
             <h4>Articles with largest group of registered users</h4>
-
+            <% for (let i = 0, size = top_regUsers.length; i < size; i++) {%>
+                <p>
+                    <%= top_regUsers[i]._id%> : <%= top_regUsers[i].noUniqueUsers%>
+                </p>
+            <% } %>
         </div>
         <div class="col-md-6">
             <h4>Articles with smallest group of registered users</h4>
-
+            <% for (let i = 0, size = bottom_regUsers.length; i < size; i++) {%>
+                <p>
+                    <%= bottom_regUsers[i]._id%> : <%= bottom_regUsers[i].noUniqueUsers%>
+                </p>
+            <% } %>
         </div>
     </div>
 </div>
