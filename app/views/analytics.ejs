@@ -51,7 +51,6 @@
 	<div class="jumbotron">
 		<div class="container">
 
-			<!--      place google chart here      -->
 			<h1>Overview</h1>
 
 			<div class="row">
@@ -122,6 +121,21 @@
 
 
             })
+
+            $(document).on('click', '#option1', function(){
+
+            	// $('#bar-chart').before("<h3>Revision number by year</h2>");
+			    document.getElementById('bar-chart-container').style.display = '';
+			    document.getElementById('pie-chart-container').style.display = 'none';
+            }); 
+
+            $(document).on('click', '#option2', function(){
+			    // $('#bar-chart').style.display = 'none';
+			    // $('#pie-chart').style.display = '';
+            	// $('#pie-chart').before("<h3>Revision number distribution by user type</h2>");
+			    document.getElementById('bar-chart-container').style.display = 'none';
+			    document.getElementById('pie-chart-container').style.display = '';
+            }); 
 
 		});
 
