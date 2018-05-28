@@ -273,3 +273,38 @@ module.exports.numAge = function(req, res)
         res.render('templates/age.ejs', {oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
     })
 }
+
+module.exports.individualPage = function(req, res) 
+{
+    var titleList = [];
+    Promise.resolve(Revision.findTitleNames())
+    .then(undefined, function(err) {
+        console.log(err);
+        
+    })
+    .then(function(distinctTitles) {
+        for (let i = 0, size = distinctTitles.length; i < size; i++) { 
+        titleList[i] = distinctTitles[i];
+        }
+        console.log(titleList);
+    })
+    .then(function() {
+        res.render('templates/individual.ejs', {titleOptions : titleList});
+    })
+    
+}
+
+module.exports.individualResult = function(req,res)
+{
+    var title = req.query.title;
+    console.log(title);
+    Promise.resolve(Revision.totalNumRev(title))
+    .then(undefined, function(err) {
+        console.log(err);  
+    })
+    .then(function(numRev) {
+        var numRev = numRev;
+        console.log(numRev);
+        res.render('templates/individualresult.ejs', {title: title, numRev: numRev});
+    })
+}

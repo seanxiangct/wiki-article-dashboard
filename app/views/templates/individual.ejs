@@ -2,11 +2,17 @@
         <!-- Example row of columns -->
         <div class="row">
             <h3>Select an article</h3>
-                <label for="highRev">Title:  </label>
-                <input id="articleTitle" type="text" name="title" value="Enter title">
-                <input type="submit" value="OK">   
+                <label for="titlelist">Title:  </label>
+                <select id="titlelist">
+                        <% for (let i = 0, size = titleOptions.length; i < size; i++) {%>
+                            <option>
+                                <%= titleOptions[i] %>
+                            </option>
+                        <% } %>    
+                </select>
+                <button id="titleokay">OK</button>
         </div>
-        <div class="row">
+        <div id="individualResult" class="row">
             <h2>Display results here</h2>
                 
         </div>

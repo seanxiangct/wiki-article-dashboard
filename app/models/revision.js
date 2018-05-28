@@ -88,6 +88,18 @@ RevisionSchema.statics.findByYearAndType = function()
     )
 }
 
+// find distinct title names
+RevisionSchema.statics.findTitleNames = function()
+{
+	return this.distinct('title')
+}
+
+RevisionSchema.statics.totalNumRev = function(title)
+{
+	return this.find({title: title}).count()
+}
+
+
 
 // model is a schema binded with a collection
 // Schema.model(model_name, schema variable, collection name)

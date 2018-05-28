@@ -55,7 +55,7 @@
 			<h1>Overview</h1>
 
 			<div class="row">
-				<div>
+				<div id="tabs">
 					<a id="group_button" class="btn btn-primary btn-lg" role="button">Group Analysis&raquo;</a> 
 					<a id="individual_button" class="btn btn-primary btn-lg" role="button">Individual Analysis&raquo;</a>
 					<a id="author_button" class="btn btn-primary btn-lg" role="button">Author Analysis &raquo;</a>
@@ -72,22 +72,20 @@
 
 	<!-- /container -->
 	<% var group_html = include('templates/group.ejs'); %>
-	<% var indiv_html = include('templates/individual.ejs'); %>
 	<% var author_html = include('templates/author.ejs'); %>
 
 	<script>
 		$(document).ready(function(){
 			$("#group_button").click(function(){
 				$("#analysis").html(`<%- group_html %>`);
-
 			});
-			$("#individual_button").click(function(){
-				$("#analysis").html(`<%- indiv_html %>`);     
-			});
+            $("#tabs").on('click', '#individual_button', function(){
+                $("#analysis").load('/individual');
+            });
 			$("#author_button").click(function(){
 				$("#analysis").html(`<%- author_html %>`);     
 			});    
-            $("#okay1").click(function(){
+            $(document).on('click', '#okay1', function(){
                 var parameter = {number: $("#numRevision").val()};
                 var jqxhr = $.get( '/numrevision',parameter);
                 jqxhr.done(function(result) {
@@ -98,7 +96,7 @@
                     //console.log("Response status:" + jqXHR.status)
                 });
             }); 
-            $("#okay3").click(function(){
+            $(document).on('click', '#okay3', function(){
                 var parameter = {number: $("#numHistory").val()};
                 var jqxhr = $.get( '/age',parameter);
                 jqxhr.done(function(result) {
@@ -109,6 +107,21 @@
                     //console.log("Response status:" + jqXHR.status)
                 });
             }); 
+
+            $(document).on('click', '#titleokay', function(){
+                var titleInput = {title: $("#titlelist").val()};
+                console.log(titleInput);
+                var jqxhr = $.get( '/individualresult',titleInput);
+                jqxhr.done(function(result) {
+                    $('#individualResult').html(result);
+                });
+                jqxhr.fail(function(jqXHR){
+                    $('#individualResult').html("Response status:" + jqXHR.status)
+                    //console.log("Response status:" + jqXHR.status)
+                });
+
+
+            })
 
 		});
 
