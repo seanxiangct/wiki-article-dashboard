@@ -9,7 +9,6 @@ function drawPie()
     $.getJSON('/userCounts',null, function(data) {
 
         let options = {
-                title: "Revision number distribution by user type",
                 width: 400,
                 height: 300
             };
@@ -34,7 +33,6 @@ function drawBar()
     $.getJSON('/revisionByYear',null, function(data) {
 
         let options = {
-            title: "Revision number by year",
             width: 950,
             height: 300,
             hAxis: {
@@ -43,7 +41,7 @@ function drawBar()
                 maxValue: 2018
             },
             vAxis: {
-                title: 'Revisions'
+                0: {title: 'Revisions'}
             }
         };
 
