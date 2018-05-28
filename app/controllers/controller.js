@@ -293,3 +293,18 @@ module.exports.individualPage = function(req, res)
     })
     
 }
+
+module.exports.individualResult = function(req,res)
+{
+    var title = req.query.title;
+    console.log(title);
+    Promise.resolve(Revision.totalNumRev(title))
+    .then(undefined, function(err) {
+        console.log(err);  
+    })
+    .then(function(numRev) {
+        var numRev = numRev;
+        console.log(numRev);
+        res.render('templates/individualresult.ejs', {title: title, numRev: numRev});
+    })
+}

@@ -10,11 +10,14 @@ router.post('/signUp', controller.signUp);
 router.post('/signIn', controller.signIn);
 
 // analytics page routes
+// group
 router.get('/analytics', controller.showAnalyticsPage);
 router.get('/numrevision', controller.numRevision);
 //router.get('/popular', controller.numPopular);
 router.get('/age', controller.numAge);
+// indicidual
 router.get('/individual', controller.individualPage);
+router.get('/individualresult', controller.individualResult);
 
 
 // data acquisition routes

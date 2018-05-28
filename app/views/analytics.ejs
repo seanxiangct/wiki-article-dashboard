@@ -109,8 +109,17 @@
             }); 
 
             $(document).on('click', '#titleokay', function(){
-                var titleInput = {titleInput: $("#titlelist").val()};
+                var titleInput = {title: $("#titlelist").val()};
                 console.log(titleInput);
+                var jqxhr = $.get( '/individualresult',titleInput);
+                jqxhr.done(function(result) {
+                    $('#individualResult').html(result);
+                });
+                jqxhr.fail(function(jqXHR){
+                    $('#individualResult').html("Response status:" + jqXHR.status)
+                    //console.log("Response status:" + jqXHR.status)
+                });
+
 
             })
 
