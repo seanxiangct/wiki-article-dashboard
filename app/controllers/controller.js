@@ -114,8 +114,11 @@ module.exports.showAnalyticsPage = function(req, res)
 {
     var highestRevRes = [];
     var lowestRevRes = [];
+    var highestUniqueUserRes = [];
+    var lowestUniqueUserRes = [];
     var highestAgeRes = [];
     var lowestAgeRes = [];
+    
     Promise.resolve(Revision.findTitleHighestNoRev(3))
     .then(undefined, function(err) {
         console.log(err);
@@ -138,6 +141,34 @@ module.exports.showAnalyticsPage = function(req, res)
     .then(function(titleLowestNoRev) {
         for (let i = 0, size = titleLowestNoRev.length; i < size; i++) { 
         lowestRevRes[i] = titleLowestNoRev[i];
+        }
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleHighestUniqueUsers(1));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        highestUniqueUserRes.push({_id: "Cannot find the most popular articles!"})
+    })
+    .then(function(titleHighestUniqueUsers) {
+        for (let i = 0, size = titleHighestUniqueUsers.length; i < size; i++) { 
+        highestUniqueUserRes[i] = titleHighestUniqueUsers[i];
+        }
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleLowestUniqueUsers(1));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        lowestUniqueUserRes.push({_id: "Cannot find the least popular articles!"})
+    })
+    .then(function(titleLowestUniqueUsers) {
+        for (let i = 0, size = titleLowestUniqueUsers.length; i < size; i++) { 
+        lowestUniqueUserRes[i] = titleLowestUniqueUsers[i];
         }
     })
     .then(function() {
@@ -183,10 +214,12 @@ module.exports.showAnalyticsPage = function(req, res)
     .then(function() {
         console.log(highestRevRes);
         console.log(lowestRevRes);
+        console.log(highestUniqueUserRes);
+        console.log(lowestUniqueUserRes);
         console.log(highestAgeRes);
         console.log(lowestAgeRes);
 
-        res.render('analytics.ejs', {top_revisions: highestRevRes, bottom_revisions: lowestRevRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
+        res.render('analytics.ejs', {top_revisions: highestRevRes, bottom_revisions: lowestRevRes, top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
     })
 }
 
@@ -223,6 +256,44 @@ module.exports.numRevision = function(req, res)
     })
     .then(function() {
         res.render('templates/numrevision.ejs', { top_revisions: highestRevRes, bottom_revisions: lowestRevRes });
+    })
+}
+
+module.exports.numPopular = function(req, res)
+{
+    var number = Number(req.query.number);
+    console.log(number);
+    var highestUniqueUserRes = [];
+    var lowestUniqueUserRes = [];
+
+    Promise.resolve(Revision.findTitleHighestUniqueUsers(number))
+    .then(undefined, function(err) {
+        console.log(err);
+        highestUniqueUserRes.push({_id: "Cannot find the most popular articles!"})
+    })
+    .then(function(titleHighestUniqueUsers) {
+        for (let i = 0, size = titleHighestUniqueUsers.length; i < size; i++) { 
+        highestUniqueUserRes[i] = titleHighestUniqueUsers[i];
+        }
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleLowestUniqueUsers(number));
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+        lowestUniqueUserRes.push({_id: "Cannot find the least popular articles!"})
+    })
+    .then(function(titleLowestUniqueUsers) {
+        for (let i = 0, size = titleLowestUniqueUsers.length; i < size; i++) { 
+        lowestUniqueUserRes[i] = titleLowestUniqueUsers[i];
+        }
+    })
+    .then(function() {
+        console.log(highestUniqueUserRes);
+        console.log(lowestUniqueUserRes);
+        res.render('templates/popular.ejs', { top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes });
     })
 }
 

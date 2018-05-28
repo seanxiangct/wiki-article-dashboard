@@ -13,9 +13,9 @@ router.post('/signIn', controller.signIn);
 // group
 router.get('/analytics', controller.showAnalyticsPage);
 router.get('/numrevision', controller.numRevision);
-//router.get('/popular', controller.numPopular);
+router.get('/popular', controller.numPopular);
 router.get('/age', controller.numAge);
-// indicidual
+// individual
 router.get('/individual', controller.individualPage);
 router.get('/individualresult', controller.individualResult);
 

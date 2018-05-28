@@ -94,7 +94,20 @@
                     $('#numRevisionResult').html("Response status:" + jqXHR.status)
                     //console.log("Response status:" + jqXHR.status)
                 });
+			});
+			
+			$(document).on('click', '#okay2', function(){
+                var parameter = {number: $("#numPopular").val()};
+                var jqxhr = $.get( '/popular',parameter);
+                jqxhr.done(function(result) {
+                    $('#numPopularResult').html(result);
+                });
+                jqxhr.fail(function(jqXHR){
+                    $('#numPopularResult').html("Response status:" + jqXHR.status)
+                    //console.log("Response status:" + jqXHR.status)
+                });
             }); 
+
             $(document).on('click', '#okay3', function(){
                 var parameter = {number: $("#numHistory").val()};
                 var jqxhr = $.get( '/age',parameter);
