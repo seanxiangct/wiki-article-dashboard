@@ -98,6 +98,7 @@ function show_bar()
 
 function show_pie()
 {
+    console.log('pie')
     $('#bar-chart').style.display = 'none';
     $('#pie-chart').style.display = '';
 }
