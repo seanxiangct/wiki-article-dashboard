@@ -93,6 +93,8 @@ RevisionSchema.statics.findTitleLowestAge = function(number){
 	.exec()
 }
 
+
+
 RevisionSchema.statics.findByYearAndType = function()
 {
 	return Revision.aggregate(
@@ -108,6 +110,7 @@ RevisionSchema.statics.findByYearAndType = function()
             }
         ]
     )
+
 }
 
 RevisionSchema.statics.findByYearAndTypeForArticle = function(article)
@@ -130,6 +133,16 @@ RevisionSchema.statics.findByYearAndTypeForArticle = function(article)
     )
 }
 
+RevisionSchema.statics.totalNumRevForUser = function(type)
+{
+	return this.find({type: type}).count()
+}
+
+RevisionSchema.statics.totalNumRevForUserAndArticle = function(title, type)
+{
+	return this.find({title: title, type: type}).count()
+}
+
 // find distinct title names
 RevisionSchema.statics.findTitleNames = function()
 {
@@ -138,6 +151,7 @@ RevisionSchema.statics.findTitleNames = function()
 
 RevisionSchema.statics.totalNumRev = function(title)
 {
+	console.log(title)
 	return this.find({title: title}).count()
 }
 

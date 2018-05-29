@@ -1,8 +1,8 @@
 google.charts.load('current', {packages: ['corechart', 'bar']});
 
-
 google.charts.setOnLoadCallback(load_charts);
 
+// main conditional charts wrapper
 function load_charts()
 {
     if ($("#analysis").hasClass('group')){
@@ -19,10 +19,50 @@ function load_charts()
     }
 }
 
-function drawPie()
+function group_charts()
 {
-    $.getJSON('/userCounts',null, function(data) {
+    group_bar();
+    group_pie();
+}
 
+function individual_charts()
+{
+    $(document).on('click', '#titleokay', function(){
+        var titleInput = {title: $("#titlelist").val()};
+        $.getJSON('/individualBar', titleInput, function(data) {
+            draw_bar(data);
+        });
+        $.getJSON('/individualPie', titleInput, function(data) {
+            draw_pie(data);
+        });
+    });
+}
+
+function author_charts()
+{
+
+}
+
+function group_pie()
+{
+    $.getJSON('/groupPie',null, function(data) {
+
+        draw_pie(data);
+
+    });
+}
+
+function group_bar()
+{
+    $.getJSON('/groupBar',null, function(data) {
+
+        draw_bar(data);
+
+    });
+}
+
+function draw_pie(data)
+{
         let options = {
                 width: 400,
                 height: 300
@@ -39,77 +79,10 @@ function drawPie()
         })
         var chart = new google.visualization.PieChart($("#pie-chart")[0]);
         chart.draw(graphData, options);
-
-    });
 }
 
-function drawBar()
-{
-    $.getJSON('/revisionByYear',null, function(data) {
 
-        let options = {
-            width: 950,
-            height: 300,
-            hAxis: {
-                title: 'Year',
-                minValue: 2001,
-                maxValue: 2018
-            },
-            vAxis: {
-                0: {title: 'Revisions'}
-            }
-        };
-
-        let data_matrix = new Array(18);
-        let cols = ['Year', 'Admin', 'Regular User', 'Anonymous', 'Bot'];
-        for (let i = 0; i < data_matrix.length; i++)
-        {
-            data_matrix[i] = new Array(5);
-        }
-        let row_index = 0;
-        let current = 2001;
-        // data.forEach( function(element, index) {
-        for (let i = 0; i < data.length; i++)
-        {
-            if (typeof data_matrix[row_index][0] === 'undefined')
-            {
-                data_matrix[row_index][0] = data[i]._id.year.toString();
-            }
-
-            if (data[i]._id.user_type == 'admin')
-                data_matrix[row_index][1] = data[i].count;
-            else if (data[i]._id.user_type == 'reg')
-                data_matrix[row_index][2] = data[i].count;
-            else if (data[i]._id.user_type == 'anon')
-                data_matrix[row_index][3] = data[i].count;
-            else if (data[i]._id.user_type == 'bot')
-                data_matrix[row_index][4] = data[i].count;
-
-            if (typeof data[i+1] != 'undefined' && 
-                data[i+1]._id.year == (current+1))
-            {
-                current++;
-                row_index++;
-            }
-        }
-        data_matrix.unshift(cols);
-
-        data = new google.visualization.arrayToDataTable(data_matrix);
-
-        var chart = new google.charts.Bar(document.getElementById('bar-chart'));
-        chart.draw(data, options);
-
-
-    });
-}
-
-function group_charts()
-{
-    drawBar();
-    drawPie();
-}
-
-function drawBarForArticle(data)
+function draw_bar(data)
 {
 
     // find the year range
@@ -133,6 +106,7 @@ function drawBarForArticle(data)
     };
 
 
+    // convert json data into data table
     let data_matrix = new Array(max - min + 1);
     let cols = ['Year', 'Admin', 'Regular User', 'Anonymous', 'Bot'];
     for (let i = 0; i < data_matrix.length; i++)
@@ -140,7 +114,6 @@ function drawBarForArticle(data)
         data_matrix[i] = new Array(5);
     }
 
-    console.log(data_matrix)
     let row_index = 0;
     let current = min;
     // data.forEach( function(element, index) {
@@ -167,30 +140,14 @@ function drawBarForArticle(data)
             row_index++;
         }
     }
+
+    // adding x axis labels 
     data_matrix.unshift(cols);
 
-    console.log(data_matrix)
     data = new google.visualization.arrayToDataTable(data_matrix);
 
     var chart = new google.charts.Bar(document.getElementById('bar-chart'));
     chart.draw(data, options);
-
-}
-
-
-function individual_charts()
-{
-    $(document).on('click', '#titleokay', function(){
-        var titleInput = {title: $("#titlelist").val()};
-        $.getJSON('/revisionByYearForArticle', titleInput, function(data) {
-            drawBarForArticle(data);
-
-        });
-    });
-}
-
-function author_charts()
-{
 
 }
 
