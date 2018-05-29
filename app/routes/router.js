@@ -23,6 +23,7 @@ router.get('/individualresult', controller.individualResult);
 // data acquisition routes
 router.get('/userCounts', controller.getUserCounts);
 router.get('/revisionByYear', controller.countByYearAndType);
+router.get('/revisionByYearForArticle', controller.countByYearAndTypeForArticle);
 
 
 module.exports = router;

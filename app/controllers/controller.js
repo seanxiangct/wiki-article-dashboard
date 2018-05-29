@@ -86,6 +86,10 @@ module.exports.getUserCounts = function(req, res)
         Revision.find({type: 'anon'}).count(),
         Revision.find({type: 'bot'}).count(),
         Revision.find({type: 'reg'}).count()
+        // Revision.totalNumRev('admin'),
+        // Revision.totalNumRev('anon'),
+        // Revision.totalNumRev('bot'),
+        // Revision.totalNumRev('reg')
         ]).then(function(user_counts) {
             user_counts = {
                 'Admin': user_counts[0],
@@ -107,6 +111,17 @@ module.exports.countByYearAndType = function(req, res)
     }).catch(function(err) {
         console.log("Cannot count users");
     })
+}
+
+module.exports.countByYearAndTypeForArticle = function(req, res)
+{
+    Revision.findByYearAndTypeForArticle(req.query.title)
+    .then(function(result) {
+        res.json(result);
+    }).catch(function(err) {
+        console.log("Cannot count users");
+    })
+
 }
 
 // Analytics page functions
@@ -212,12 +227,12 @@ module.exports.showAnalyticsPage = function(req, res)
         }
     })
     .then(function() {
-        console.log(highestRevRes);
-        console.log(lowestRevRes);
-        console.log(highestUniqueUserRes);
-        console.log(lowestUniqueUserRes);
-        console.log(highestAgeRes);
-        console.log(lowestAgeRes);
+        // console.log(highestRevRes);
+        // console.log(lowestRevRes);
+        // console.log(highestUniqueUserRes);
+        // console.log(lowestUniqueUserRes);
+        // console.log(highestAgeRes);
+        // console.log(lowestAgeRes);
 
         res.render('analytics.ejs', {top_revisions: highestRevRes, bottom_revisions: lowestRevRes, top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
     })
@@ -357,7 +372,7 @@ module.exports.individualPage = function(req, res)
         for (let i = 0, size = distinctTitles.length; i < size; i++) { 
         titleList[i] = distinctTitles[i];
         }
-        console.log(titleList);
+        // console.log(titleList);
     })
     .then(function() {
         res.render('templates/individual.ejs', {titleOptions : titleList});
@@ -370,14 +385,14 @@ module.exports.individualResult = function(req,res)
     var title = req.query.title;
     var numRev;
     var topUsers = [];
-    console.log(title);
+    // console.log(title);
     Promise.resolve(Revision.totalNumRev(title))
     .then(undefined, function(err) {
         console.log(err);  
     })
     .then(function(totalNumRev) {
         numRev = totalNumRev;
-        console.log(numRev); 
+        // console.log(numRev); 
     })
     .then(function(){
         return new Promise(function(resolve, reject) {
@@ -391,7 +406,7 @@ module.exports.individualResult = function(req,res)
         for (let i = 0, size = top5RegUsers.length; i < size; i++) { 
         topUsers[i] = top5RegUsers[i];
         }
-        console.log(topUsers);
+        // console.log(topUsers);
         res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers});
     })
 }

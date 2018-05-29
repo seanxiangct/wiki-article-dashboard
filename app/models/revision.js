@@ -111,6 +111,26 @@ RevisionSchema.statics.findByYearAndType = function()
     )
 }
 
+RevisionSchema.statics.findByYearAndTypeForArticle = function(article)
+{
+	return Revision.aggregate(
+        [
+        		{
+        		  $match : { title: article }
+        		},
+            {
+                $group : {
+                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
+                   count: { $sum: 1 }
+                }
+            },
+            {
+                $sort : { '_id.year': 1, 'user_type': 1 }
+            },
+        ]
+    )
+}
+
 // find distinct title names
 RevisionSchema.statics.findTitleNames = function()
 {

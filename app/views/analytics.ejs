@@ -77,13 +77,24 @@
 		$(document).ready(function(){
 			$("#group_button").click(function(){
 				$("#analysis").html(`<%- group_html %>`);
-				location.reload();
+                $("#analysis").addClass('group');
+                $("#analysis").removeClass('individual');
+                $("#analysis").removeClass('author');
+				$.getScript('js/charts.js')
 			});
             $("#tabs").on('click', '#individual_button', function(){
                 $("#analysis").load('/individual');
+                $("#analysis").removeClass('group');
+                $("#analysis").addClass('individual');
+                $("#analysis").removeClass('author');
+                $.getScript('js/charts.js')
             });
 			$("#author_button").click(function(){
 				$("#analysis").html(`<%- author_html %>`);     
+                $("#analysis").removeClass('group');
+                $("#analysis").removeClass('individual');
+                $("#analysis").addClass('author');
+                $.getScript('js/charts.js')
 			});    
             $(document).on('click', '#okay1', function(){
                 var parameter = {number: $("#numRevision").val()};
@@ -123,18 +134,18 @@
 
             $(document).on('click', '#titleokay', function(){
                 var titleInput = {title: $("#titlelist").val()};
-                console.log(titleInput);
                 var jqxhr = $.get( '/individualresult',titleInput);
                 jqxhr.done(function(result) {
                     $('#individualResult').html(result);
+
                 });
                 jqxhr.fail(function(jqXHR){
                     $('#individualResult').html("Response status:" + jqXHR.status)
                     //console.log("Response status:" + jqXHR.status)
                 });
-
-
             })
+
+
 
             $(document).on('click', '#option1', function(){
 			    document.getElementById('bar-chart-container').style.display = '';
