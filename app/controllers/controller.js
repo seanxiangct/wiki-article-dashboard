@@ -2,6 +2,7 @@ const Revision = require("../models/revision");
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
+const wdk = require('wikidata-sdk');
 
 // landing page functions
 
@@ -368,10 +369,27 @@ module.exports.individualPage = function(req, res)
 module.exports.individualResult = function(req,res)
 {
     var title = req.query.title;
+    var latestRevTime;
     var numRev;
     var topUsers = [];
     console.log(title);
-    Promise.resolve(Revision.totalNumRev(title))
+    var revisionUrl;
+   
+    Promise.resolve(Revision.findTitleLatestRev(title))
+    .then(undefined, function(err) {
+        console.log(err);  
+    })
+    .then(function(latestRev) {
+        latestRevTime = latestRev[0].timestamp;
+        console.log(latestRevTime); 
+        revisionUrl = wdk.getRevisions(title, { start: latestRevTime})
+        console.log(revisionUrl);
+    })
+    .then(function(){
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.totalNumRev(title));
+        })
+    })
     .then(undefined, function(err) {
         console.log(err);  
     })
@@ -391,7 +409,6 @@ module.exports.individualResult = function(req,res)
         for (let i = 0, size = top5RegUsers.length; i < size; i++) { 
         topUsers[i] = top5RegUsers[i];
         }
-        console.log(topUsers);
         res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers});
     })
 }
