@@ -112,27 +112,37 @@ function group_charts()
 function drawBarForArticle(data)
 {
 
+    // find the year range
+    years = [];
+    for (var i in data)
+        years.push(data[i]._id.year)
+
+    var min = Math.min.apply(null, years),
+        max = Math.max.apply(null, years);
+
     let options = {
         width: 950,
         height: 300,
         hAxis: {
             title: 'Year',
-            minValue: 2001,
-            maxValue: 2018
+            minValue: 2001
         },
         vAxis: {
             0: {title: 'Revisions'}
         }
     };
 
-    let data_matrix = new Array(18);
+
+    let data_matrix = new Array(max - min + 1);
     let cols = ['Year', 'Admin', 'Regular User', 'Anonymous', 'Bot'];
     for (let i = 0; i < data_matrix.length; i++)
     {
         data_matrix[i] = new Array(5);
     }
+
+    console.log(data_matrix)
     let row_index = 0;
-    let current = 2001;
+    let current = min;
     // data.forEach( function(element, index) {
     for (let i = 0; i < data.length; i++)
     {
@@ -159,6 +169,7 @@ function drawBarForArticle(data)
     }
     data_matrix.unshift(cols);
 
+    console.log(data_matrix)
     data = new google.visualization.arrayToDataTable(data_matrix);
 
     var chart = new google.charts.Bar(document.getElementById('bar-chart'));
@@ -172,7 +183,6 @@ function individual_charts()
     $(document).on('click', '#titleokay', function(){
         var titleInput = {title: $("#titlelist").val()};
         $.getJSON('/revisionByYearForArticle', titleInput, function(data) {
-            console.log(data);
             drawBarForArticle(data);
 
         });
