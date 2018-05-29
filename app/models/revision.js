@@ -18,12 +18,11 @@ var RevisionSchema = new mongoose.Schema(
 
 
 // find the latest revision of an article 
-RevisionSchema.statics.findTitleLatestRev = function(title, callback)
+RevisionSchema.statics.findTitleLatestRev = function(title)
 {
-	return this.find({'title':title})
-	.sort({'timestamp':-1})
+	return this.find({title:title})
+	.sort({timestamp:-1})
 	.limit(1)
-	.exec(callback)
 }
 
 
