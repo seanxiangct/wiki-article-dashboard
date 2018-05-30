@@ -21,8 +21,8 @@ router.get('/individualresult', controller.individualResult);
 
 
 // data acquisition routes
-router.get('/groupPie', controller.getGroupPieData);
 router.get('/groupBar', controller.getGroupBarData);
+router.get('/groupPie', controller.getGroupPieData);
 router.get('/individualBar', controller.getIndividualBarData);
 router.get('/individualPie', controller.getIndividualPieData);
 

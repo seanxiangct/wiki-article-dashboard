@@ -97,40 +97,40 @@ RevisionSchema.statics.findTitleLowestAge = function(number){
 
 RevisionSchema.statics.findByYearAndType = function()
 {
-	return Revision.aggregate(
-        [
-            {
-                $group : {
-                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
-                   count: { $sum: 1 }
-                }
-            },
-            {
-                $sort : { '_id.year': 1, 'user_type': 1 }
-            }
-        ]
-    )
+    return this.aggregate()
+    .group({
+    	_id: {
+    		year: {$year: "$timestamp"},
+    		user_type: '$type'
+    	},
+    	count: {$sum: 1}
+    })
+    .sort({
+    	'_id.year': 1,
+    	'user_type': 1
+    })
+    .exec()
 
 }
 
-RevisionSchema.statics.findByYearAndTypeForArticle = function(article)
+RevisionSchema.statics.findByYearAndTypeForArticle = function(title)
 {
-	return Revision.aggregate(
-        [
-        		{
-        		  $match : { title: article }
-        		},
-            {
-                $group : {
-                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
-                   count: { $sum: 1 }
-                }
-            },
-            {
-                $sort : { '_id.year': 1, 'user_type': 1 }
-            },
-        ]
-    )
+    return this.aggregate()
+    .match({
+    	title: title
+    })
+    .group({
+    	_id: {
+    		year: {$year: "$timestamp"},
+    		user_type: '$type'
+    	},
+    	count: {$sum: 1}
+    })
+    .sort({
+    	'_id.year': 1,
+    	'user_type': 1
+    })
+    .exec()
 }
 
 RevisionSchema.statics.totalNumRevForUser = function(type)
