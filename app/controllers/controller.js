@@ -454,6 +454,7 @@ module.exports.individualResult = function(req,res)
     var topUsers = [];
     console.log(title);
     var revJson;
+    var dlNum;
    
     Promise.resolve(Revision.findTitleLatestRev(title))
     .then(undefined, function(err) {
@@ -471,7 +472,8 @@ module.exports.individualResult = function(req,res)
             } else {
                 revJson = data;
                 console.log(revJson);
-                console.log(revJson.length);
+                dlNum = String(revJson.length - 1);
+                console.log(dlNum);
             }
           });
 
@@ -501,6 +503,6 @@ module.exports.individualResult = function(req,res)
         topUsers[i] = top5RegUsers[i];
         }
         // console.log(topUsers);
-        res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers, revData: revJson});
+        res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers, downloadNum: dlNum});
     })
 }
