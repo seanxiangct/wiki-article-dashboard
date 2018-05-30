@@ -449,40 +449,11 @@ module.exports.individualPage = function(req, res)
 module.exports.individualResult = function(req,res)
 {
     var title = req.query.title;
-    var latestRevTime;
     var numRev;
     var topUsers = [];
-    console.log(title);
-    var revJson;
-    var dlNum;
+    console.log(title); //why print twice???
    
-    Promise.resolve(Revision.findTitleLatestRev(title))
-    .then(undefined, function(err) {
-        console.log(err);  
-    })
-    .then(function(latestRev) {
-        latestRevTime = latestRev[0].timestamp.toISOString();
-        console.log(latestRevTime); 
-
-        client.getArticleRevisions(title, latestRevTime, function(err, data) {
-            // error handling
-            if (err) {
-              console.log(err);
-              return;
-            } else {
-                revJson = data;
-                console.log(revJson);
-                dlNum = String(revJson.length - 1);
-                console.log(dlNum);
-            }
-          });
-
-    })
-    .then(function(){
-        return new Promise(function(resolve, reject) {
-            resolve(Revision.totalNumRev(title));
-        })
-    })
+    Promise.resolve(Revision.totalNumRev(title))
     .then(undefined, function(err) {
         console.log(err);  
     })
@@ -502,7 +473,39 @@ module.exports.individualResult = function(req,res)
         for (let i = 0, size = top5RegUsers.length; i < size; i++) { 
         topUsers[i] = top5RegUsers[i];
         }
-        // console.log(topUsers);
-        res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers, downloadNum: dlNum});
+        res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers});
+    })
+}
+
+
+module.exports.individualModal = function(req, res) 
+{
+    var title = req.query.title;
+    var latestRevTime;
+
+    Promise.resolve(Revision.findTitleLatestRev(title))
+    .then(undefined, function(err) {
+        console.log(err);  
+    })
+    .then(function(latestRev) {
+        latestRevTime = latestRev[0].timestamp.toISOString();
+        //console.log(latestRevTime); 
+
+        client.getArticleRevisions(title, latestRevTime, function(err, data) {
+            // error handling
+            if (err) {
+              console.log(err);
+              return;
+            } else {
+                dlNum = String(data.length - 1);
+                console.log(data);
+                // insert data to db
+                  
+                  
+
+                res.render('templates/modal.ejs', {downloadNum: dlNum});
+            }
+          });
+
     })
 }

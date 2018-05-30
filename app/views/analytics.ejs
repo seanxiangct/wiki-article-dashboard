@@ -51,11 +51,11 @@
 	<div class="jumbotron">
 		<div class="container">
 
-			<h1>Overview</h1>
+			<h1 id="mainTitle">Overview</h1>
 
 			<div class="row">
 				<div id="tabs">
-					<a id="group_button" class="btn btn-primary btn-lg" role="button">Group Analysis&raquo;</a> 
+					<a id="group_button" class="btn btn-primary btn-lg" role="button">Overview&raquo;</a> 
 					<a id="individual_button" class="btn btn-primary btn-lg" role="button">Individual Analysis&raquo;</a>
 					<a id="author_button" class="btn btn-primary btn-lg" role="button">Author Analysis &raquo;</a>
 				</div>
@@ -80,7 +80,8 @@
                 $("#analysis").addClass('group');
                 $("#analysis").removeClass('individual');
                 $("#analysis").removeClass('author');
-				$.getScript('js/charts.js')
+                $.getScript('js/charts.js')
+                $("#mainTitle").html('Overview');
 			});
             $("#tabs").on('click', '#individual_button', function(){
                 $("#analysis").load('/individual');
@@ -88,6 +89,7 @@
                 $("#analysis").addClass('individual');
                 $("#analysis").removeClass('author');
                 $.getScript('js/charts.js')
+                $("#mainTitle").html('Individual Analysis');
             });
 			$("#author_button").click(function(){
 				$("#analysis").html(`<%- author_html %>`);     
@@ -95,6 +97,7 @@
                 $("#analysis").removeClass('individual');
                 $("#analysis").addClass('author');
                 $.getScript('js/charts.js')
+                $("#mainTitle").html('Author Analysis');
 			});    
             $(document).on('click', '#okay1', function(){
                 var parameter = {number: $("#numRevision").val()};
@@ -131,20 +134,34 @@
                     //console.log("Response status:" + jqXHR.status)
                 });
             }); 
-
+            
+            var titleInput;
             $(document).on('click', '#titleokay', function(){
-                var titleInput = {title: $("#titlelist").val()};
+                titleInput = {title: $("#titlelist").val()};
+                var jqxhr = $.get( '/individualmodal',titleInput);
+                jqxhr.done(function(result) {
+                    $('#indivModal').html(result);
+                });
+                jqxhr.fail(function(jqXHR){
+                    $('#indivModal').html("Response status:" + jqXHR.status)
+                    //console.log("Response status:" + jqXHR.status)
+                });
+                $('#indivModal').css({ display: "block" });
+
+            });
+
+            $(document).on('click', '.close', function() {
+                $('#indivModal').css({ display: "none" });
                 var jqxhr = $.get( '/individualresult',titleInput);
                 jqxhr.done(function(result) {
                     $('#individualResult').html(result);
-
                 });
                 jqxhr.fail(function(jqXHR){
                     $('#individualResult').html("Response status:" + jqXHR.status)
                     //console.log("Response status:" + jqXHR.status)
                 });
-            })
 
+            });
 
             $(document).on('click', '#option1', function(){
 			    document.getElementById('bar-chart-container').style.display = '';
@@ -165,8 +182,7 @@
                 document.getElementById('pie-chart-container').style.display = 'none';
                 if ($('#bar-chart-container-2').length != 0)
                     document.getElementById('bar-chart-container-2').style.display = '';
-            }); 
-            
+            });           
 
 		});
 
