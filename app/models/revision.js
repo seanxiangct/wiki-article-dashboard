@@ -115,6 +115,22 @@ RevisionSchema.statics.findByYearAndType = function()
 
 RevisionSchema.statics.findByYearAndTypeForArticle = function(title)
 {
+	// return Revision.aggregate(
+ //        [
+ //        		{
+ //        		  $match : { title: article }
+ //        		},
+ //            {
+ //                $group : {
+ //                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
+ //                   count: { $sum: 1 }
+ //                }
+ //            },
+ //            {
+ //                $sort : { '_id.year': 1, 'user_type': 1 }
+ //            },
+ //        ]
+ //    )
     return this.aggregate()
     .match({
     	title: title
@@ -131,6 +147,54 @@ RevisionSchema.statics.findByYearAndTypeForArticle = function(title)
     	'user_type': 1
     })
     .exec()
+}
+
+RevisionSchema.statics.topNUsersForArticle = function(title, n)
+{
+	return Revision.aggregate(
+        [
+    		{
+    			$match : {
+    				title: title
+    			}
+    		},
+            {
+                $group : {
+                   _id : '$user',
+                   count: { $sum: 1 }
+                }
+            },
+            {
+              	$sort : {'count': -1}
+            },
+            {
+            		$limit : n
+            }
+        ]
+    )
+}
+
+RevisionSchema.statics.numRevByYear = function(title, user)
+{
+	return Revision.aggregate(
+        [
+    		{
+    			$match : {
+    				title: title,
+    				user: user
+    			}
+    		},
+            {
+                $group : {
+                   _id : { year: { $year: "$timestamp" } },
+                   count: { $sum: 1 }
+                }
+            },
+            {
+            	$sort : { '_id.year': 1 }
+            }
+        ]
+    )
 }
 
 RevisionSchema.statics.totalNumRevForUser = function(type)

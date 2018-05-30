@@ -35,6 +35,10 @@ function individual_charts()
         $.getJSON('/individualPie', titleInput, function(data) {
             draw_pie(data);
         });
+        $.getJSON('/individualUserBar', titleInput, function(data) {
+            draw_bar_user(data);
+        });
+
     });
 }
 
@@ -63,7 +67,7 @@ function group_bar()
 
 function draw_pie(data)
 {
-        let options = {
+        var options = {
                 width: 400,
                 height: 300
             };
@@ -93,7 +97,7 @@ function draw_bar(data)
     var min = Math.min.apply(null, years),
         max = Math.max.apply(null, years);
 
-    let options = {
+    var options = {
         width: 950,
         height: 300,
         hAxis: {
@@ -107,17 +111,17 @@ function draw_bar(data)
 
 
     // convert json data into data table
-    let data_matrix = new Array(max - min + 1);
-    let cols = ['Year', 'Admin', 'Regular User', 'Anonymous', 'Bot'];
-    for (let i = 0; i < data_matrix.length; i++)
+    var data_matrix = new Array(max - min + 1);
+    var cols = ['Year', 'Admin', 'Regular User', 'Anonymous', 'Bot'];
+    for (var i = 0; i < data_matrix.length; i++)
     {
         data_matrix[i] = new Array(5);
     }
 
-    let row_index = 0;
-    let current = min;
+    var row_index = 0;
+    var current = min;
     // data.forEach( function(element, index) {
-    for (let i = 0; i < data.length; i++)
+    for (var i = 0; i < data.length; i++)
     {
         if (typeof data_matrix[row_index][0] === 'undefined')
         {
@@ -151,17 +155,82 @@ function draw_bar(data)
 
 }
 
-function show_bar()
+function draw_bar_user(data)
 {
-    console.log('bar')
-    // document.getElementById('bar-chart')
-    $('#bar-chart').style.display = '';
-    $('#pie-chart').style.display = 'none';
-}
+    // find the year range
+    // find the user with the longest revision history
+    var sample;
+    var longest = 0;
+    for (var i in data)
+    {
+        var d = data[i][1]
+        var len = d.length;
+        if (len > longest)
+        {
+            sample = d;
+            longest = len;
+        }
 
-function show_pie()
-{
-    console.log('pie')
-    $('#bar-chart').style.display = 'none';
-    $('#pie-chart').style.display = '';
+    }
+
+    var years = [];
+    for (var i in sample)
+    {
+        years.push(sample[i]._id.year)
+    }
+
+    var min = Math.min.apply(null, years),
+        max = Math.max.apply(null, years);
+
+    var options = {
+        width: 950,
+        height: 300,
+        hAxis: {
+            title: 'Year'
+        },
+        vAxis: {
+            title: 'Count'
+        }
+    };
+
+
+    // convert json data into data table
+    var data_matrix = new Array(years.length);
+
+    // generate column names
+    var cols = ['Year'];
+    for (var i = 0; i < data.length; i++)
+    {
+        cols[i+1] = data[i][0];
+    }
+
+    // create data matrix
+    for (var i = 0; i < data_matrix.length; i++)
+    {
+        data_matrix[i] = new Array(cols.length);
+        data_matrix[i][0] = years[i].toString();
+    }
+
+    for (var i = 0; i < data.length; i++)
+    {
+        // user is the user name of the selected user
+        var user = data[i][0];
+        // counts is a list of counts by year
+        var counts = data[i][1];
+
+        var col_index = cols.indexOf(user);
+        for (var j = 0; j < counts.length; j++)
+        {
+            data_matrix[j][col_index] = counts[j].count;
+
+        }
+    }
+
+    // adding x axis labels 
+    data_matrix.unshift(cols);
+
+    data = new google.visualization.arrayToDataTable(data_matrix);
+
+    var chart = new google.charts.Bar(document.getElementById('bar-chart-2'));
+    chart.draw(data, options);    
 }
