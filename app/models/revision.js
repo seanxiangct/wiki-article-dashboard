@@ -93,41 +93,118 @@ RevisionSchema.statics.findTitleLowestAge = function(number){
 	.exec()
 }
 
+
+
 RevisionSchema.statics.findByYearAndType = function()
+{
+    return this.aggregate()
+    .group({
+    	_id: {
+    		year: {$year: "$timestamp"},
+    		user_type: '$type'
+    	},
+    	count: {$sum: 1}
+    })
+    .sort({
+    	'_id.year': 1,
+    	'user_type': 1
+    })
+    .exec()
+
+}
+
+RevisionSchema.statics.findByYearAndTypeForArticle = function(title)
+{
+	// return Revision.aggregate(
+ //        [
+ //        		{
+ //        		  $match : { title: article }
+ //        		},
+ //            {
+ //                $group : {
+ //                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
+ //                   count: { $sum: 1 }
+ //                }
+ //            },
+ //            {
+ //                $sort : { '_id.year': 1, 'user_type': 1 }
+ //            },
+ //        ]
+ //    )
+    return this.aggregate()
+    .match({
+    	title: title
+    })
+    .group({
+    	_id: {
+    		year: {$year: "$timestamp"},
+    		user_type: '$type'
+    	},
+    	count: {$sum: 1}
+    })
+    .sort({
+    	'_id.year': 1,
+    	'user_type': 1
+    })
+    .exec()
+}
+
+RevisionSchema.statics.topNUsersForArticle = function(title, n)
 {
 	return Revision.aggregate(
         [
+    		{
+    			$match : {
+    				title: title
+    			}
+    		},
             {
                 $group : {
-                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
+                   _id : '$user',
                    count: { $sum: 1 }
                 }
             },
             {
-                $sort : { '_id.year': 1, 'user_type': 1 }
+              	$sort : {'count': -1}
+            },
+            {
+            		$limit : n
             }
         ]
     )
 }
 
-RevisionSchema.statics.findByYearAndTypeForArticle = function(article)
+RevisionSchema.statics.numRevByYear = function(title, user)
 {
 	return Revision.aggregate(
         [
-        		{
-        		  $match : { title: article }
-        		},
+    		{
+    			$match : {
+    				title: title,
+    				user: user
+    			}
+    		},
             {
                 $group : {
-                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
+                   _id : { year: { $year: "$timestamp" } },
                    count: { $sum: 1 }
                 }
             },
             {
-                $sort : { '_id.year': 1, 'user_type': 1 }
-            },
+            	$sort : { '_id.year': 1 }
+            }
         ]
     )
+}
+
+RevisionSchema.statics.totalNumRevForUser = function(type)
+{
+	return this.find({type: type}).count()
+}
+
+RevisionSchema.statics.totalNumRevForUserAndArticle = function(title, type)
+{
+	return this.find({title: title, type: type}).count()
 }
 
 // find distinct title names
@@ -138,6 +215,7 @@ RevisionSchema.statics.findTitleNames = function()
 
 RevisionSchema.statics.totalNumRev = function(title)
 {
+	console.log(title)
 	return this.find({title: title}).count()
 }
 

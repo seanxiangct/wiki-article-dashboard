@@ -146,17 +146,26 @@
             })
 
 
-
             $(document).on('click', '#option1', function(){
 			    document.getElementById('bar-chart-container').style.display = '';
 			    document.getElementById('pie-chart-container').style.display = 'none';
+                if ($('#bar-chart-container-2').length != 0)
+                    document.getElementById('bar-chart-container-2').style.display = 'none';
             }); 
 
             $(document).on('click', '#option2', function(){
 			    document.getElementById('bar-chart-container').style.display = 'none';
 			    document.getElementById('pie-chart-container').style.display = '';
+                if ($('#bar-chart-container-2').length != 0)
+                    document.getElementById('bar-chart-container-2').style.display = 'none';
             }); 
 
+            $(document).on('click', '#option3', function(){
+                document.getElementById('bar-chart-container').style.display = 'none';
+                document.getElementById('pie-chart-container').style.display = 'none';
+                if ($('#bar-chart-container-2').length != 0)
+                    document.getElementById('bar-chart-container-2').style.display = '';
+            }); 
             
 
 		});

@@ -21,9 +21,11 @@ router.get('/individualresult', controller.individualResult);
 
 
 // data acquisition routes
-router.get('/userCounts', controller.getUserCounts);
-router.get('/revisionByYear', controller.countByYearAndType);
-router.get('/revisionByYearForArticle', controller.countByYearAndTypeForArticle);
+router.get('/groupBar', controller.getGroupBarData);
+router.get('/groupPie', controller.getGroupPieData);
+router.get('/individualBar', controller.getIndividualBarData);
+router.get('/individualPie', controller.getIndividualPieData);
+router.get('/individualUserBar', controller.getIndividualBarDataTopUsers);
 
 
 module.exports = router;

@@ -90,17 +90,93 @@ module.exports.signIn = function(req, res)
     })
 }
 
-module.exports.getUserCounts = function(req, res)
+module.exports.getGroupPieData = function(req, res)
 {
     Promise.all([
-        Revision.find({type: 'admin'}).count(),
-        Revision.find({type: 'anon'}).count(),
-        Revision.find({type: 'bot'}).count(),
-        Revision.find({type: 'reg'}).count()
-        // Revision.totalNumRev('admin'),
-        // Revision.totalNumRev('anon'),
-        // Revision.totalNumRev('bot'),
-        // Revision.totalNumRev('reg')
+        Revision.totalNumRevForUser('admin'),
+        Revision.totalNumRevForUser('anon'),
+        Revision.totalNumRevForUser('bot'),
+        Revision.totalNumRevForUser('reg')
+        ]).then(function(user_counts) {
+            user_counts = {
+                'Admin': user_counts[0],
+                'Anonymous': user_counts[1],
+                'Bot': user_counts[2],
+                'Regular': user_counts[3]
+            };
+            res.json(user_counts)
+        }).catch(function(err) {
+            console.log("Cannot cannot get group pie data");
+        });
+}
+
+module.exports.getGroupBarData = function(req, res)
+{
+    Revision.findByYearAndType()
+    .then(function(result) {
+        res.json(result);
+    }).catch(function(err) {
+        console.log("Cannot get group bar data");
+    })
+}
+
+module.exports.getIndividualBarData = function(req, res)
+{
+    Revision.findByYearAndTypeForArticle(req.query.title)
+    .then(function(result) {
+        res.json(result);
+    }).catch(function(err) {
+        console.log("Cannot get individual bar data");
+    })
+
+}
+
+module.exports.getIndividualBarDataTopUsers = function(req, res)
+{
+    // find the top n users for this article
+    var title = req.query.title;
+    Revision.topNUsersForArticle(title, 5)
+    .then(function(result) {
+        // find the revision number for each user
+        // generate promises
+        promises = []
+        user_names = []
+        for (var i in result)
+        {
+            user_names.push(result[i]._id);
+            promises.push(Revision.numRevByYear(title, user_names[i]));
+        }
+        Promise.all(promises)
+        .then(function(user_counts) {
+            var data = [];
+            // unpack data
+            for (var j in user_counts)
+            {
+                data[j] = [
+                    user_names[j],
+                    user_counts[j]
+                ]
+            }
+            res.json(data);
+        }).catch(function(err) {
+            console.log("Cannot cannot get group pie data");
+        });
+
+    }).catch(function(err) {
+        console.log('Cannot get individual user bar data');
+    })
+    .then()
+
+}
+
+module.exports.getIndividualPieData = function(req, res)
+{
+    var title = req.query.title;
+    Promise.all([
+        Revision.totalNumRevForUserAndArticle(title, 'admin'),
+        Revision.totalNumRevForUserAndArticle(title, 'anon'),
+        Revision.totalNumRevForUserAndArticle(title, 'bot'),
+        Revision.totalNumRevForUserAndArticle(title, 'reg'),
         ]).then(function(user_counts) {
             user_counts = {
                 'Admin': user_counts[0],
@@ -112,27 +188,6 @@ module.exports.getUserCounts = function(req, res)
         }).catch(function(err) {
             console.log("Cannot count users");
         });
-}
-
-module.exports.countByYearAndType = function(req, res)
-{
-    Revision.findByYearAndType()
-    .then(function(result) {
-        res.json(result);
-    }).catch(function(err) {
-        console.log("Cannot count users");
-    })
-}
-
-module.exports.countByYearAndTypeForArticle = function(req, res)
-{
-    Revision.findByYearAndTypeForArticle(req.query.title)
-    .then(function(result) {
-        res.json(result);
-    }).catch(function(err) {
-        console.log("Cannot count users");
-    })
-
 }
 
 // Analytics page functions
