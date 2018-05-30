@@ -2,7 +2,17 @@ const Revision = require("../models/revision");
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
-const wdk = require('wikidata-sdk');
+//const wdk = require('wikidata-sdk');
+var bot = require('nodemw');
+
+// pass configuration object
+var client = new bot({
+  protocol: 'https',           // Wikipedia now enforces HTTPS
+  server: 'en.wikipedia.org',  // host name of MediaWiki-powered site
+  path: '/w',                  // path to api.php script
+  debug: false                 // is more verbose when set to true
+});
+   
 
 // landing page functions
 
@@ -388,17 +398,28 @@ module.exports.individualResult = function(req,res)
     var numRev;
     var topUsers = [];
     console.log(title);
-    var revisionUrl;
+    var revJson;
    
     Promise.resolve(Revision.findTitleLatestRev(title))
     .then(undefined, function(err) {
         console.log(err);  
     })
     .then(function(latestRev) {
-        latestRevTime = latestRev[0].timestamp;
+        latestRevTime = latestRev[0].timestamp.toISOString();
         console.log(latestRevTime); 
-        revisionUrl = wdk.getRevisions(title, { start: latestRevTime})
-        console.log(revisionUrl);
+
+        client.getArticleRevisions(title, latestRevTime, function(err, data) {
+            // error handling
+            if (err) {
+              console.log(err);
+              return;
+            } else {
+                revJson = data;
+                console.log(revJson);
+                console.log(revJson.length);
+            }
+          });
+
     })
     .then(function(){
         return new Promise(function(resolve, reject) {
@@ -425,6 +446,6 @@ module.exports.individualResult = function(req,res)
         topUsers[i] = top5RegUsers[i];
         }
         // console.log(topUsers);
-        res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers});
+        res.render('templates/individualresult.ejs', {title: title, numRev: numRev, topUsers: topUsers, revData: revJson});
     })
 }
