@@ -1950,21 +1950,21 @@ module.exports.numAge = function(req, res)
 
 module.exports.individualPage = function(req, res) 
 {
-    var titleList = [];
-    Promise.resolve(Revision.findTitleNames())
+    var optionList = [];
+    
+    Promise.resolve(Revision.findTitleNamesRev())
     .then(undefined, function(err) {
-        console.log(err);
-        
+        console.log(err);  
     })
-    .then(function(distinctTitles) {
-        for (let i = 0, size = distinctTitles.length; i < size; i++) { 
-        titleList[i] = distinctTitles[i];
-        }
-        // console.log(titleList);
+    .then(function(titleNumRev) {
+        for (let i = 0, size = titleNumRev.length; i < size; i++) { 
+            optionList[i] = titleNumRev[i];
+            }
     })
     .then(function() {
-        res.render('templates/individual.ejs', {titleOptions : titleList});
+        res.render('templates/individual.ejs', {titleOptions : optionList});
     })
+
 }
 
 module.exports.individualResult = function(req,res)
@@ -2014,7 +2014,7 @@ module.exports.individualModal = function(req, res)
         // check if data is up to date
         var ONE_DAY = 24 * 60 * 60 * 1000; // in ms
         if (((new Date) - latestRev[0].timestamp) < ONE_DAY) {
-            res.render('templates/modal.ejs', {message1: "Database is up to date.", message2: "No data downloaded."});
+            res.render('templates/modal.ejs', {heading: "Database is up to date.", message1: "No data downloaded.", message2: ""});
         }else{
             client.getArticleRevisions(title, latestRevTime, function(err, data) {
                 // error handling
@@ -2053,9 +2053,9 @@ module.exports.individualModal = function(req, res)
                     }
     
                     res.render('templates/modal.ejs', 
-                    {message1: dlNum + " new revisions were downloaded.", 
-                    message2: "New revisions were made by: " + regNum + " regular users, " +
-                    adminNum + " admin users, " + botNum + " bot users, " + anonNum + " anonymous users."});
+                    {heading: "Data update requested", message1: dlNum + " new revisions were downloaded.", 
+                    message2: "(New revisions were made by: " + regNum + " regular users, " +
+                    adminNum + " admin users, " + botNum + " bot users, " + anonNum + " anonymous users. )"});
                 }
               });
         }

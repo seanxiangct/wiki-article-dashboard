@@ -194,9 +194,12 @@ RevisionSchema.statics.totalNumRevForUserAndArticle = function(title, type)
 }
 
 // find distinct title names
-RevisionSchema.statics.findTitleNames = function()
+RevisionSchema.statics.findTitleNamesRev = function()
 {
-	return this.distinct('title')
+	return this.aggregate()
+	.group({_id:"$title", numOfEdits: {$sum:1}})
+	.sort('_id')
+	.exec()
 }
 
 RevisionSchema.statics.totalNumRev = function(title)
