@@ -1595,6 +1595,7 @@ module.exports.getGroupBarData = function(req, res)
     .then(function(result) {
         res.json(result);
     }).catch(function(err) {
+        console.log(err);
         console.log("Cannot get group bar data");
     })
 }
@@ -1981,9 +1982,10 @@ module.exports.individualModal = function(req, res)
                 let botNum = 0;
                 let anonNum = 0;
                 let regNum = 0;
-                // insert data to db
+                
                 for (let i = 1, size = data.length; i < size; i++) {
                     data[i]['title'] = title;
+                    // create 'type' field
                     if (admin.indexOf(data[i].user) >= 0) {
                         data[i]['type'] = 'admin';
                         adminNum++;
@@ -1997,6 +1999,10 @@ module.exports.individualModal = function(req, res)
                         data[i]['type'] = 'reg';
                         regNum++;
                     }
+                    // timestamp string to date
+                    data[i].timestamp = new Date(data[i].timestamp);
+
+                    // insert to db
                     //Revision.insertNewRevision(data[i])
                     //.then(function(result) {
                     //console.log(result);
@@ -2004,7 +2010,6 @@ module.exports.individualModal = function(req, res)
                     //console.log("Caanot insert data");
                     //})
                 }
-                console.log(data);
 
                 res.render('templates/modal.ejs', {downloadNum: dlNum, adminNum: adminNum, botNum: botNum, anonNum: anonNum, regNum: regNum});
             }
