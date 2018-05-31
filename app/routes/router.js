@@ -26,6 +26,8 @@ router.get('/groupPie', controller.getGroupPieData);
 router.get('/individualBar', controller.getIndividualBarData);
 router.get('/individualPie', controller.getIndividualPieData);
 router.get('/individualUserBar', controller.getIndividualBarDataTopUsers);
+router.get('/individualSelectedUserBar', controller.getIndividualBarDataSelectedUsers);
+router.get('/top5Users', controller.getTop5Users);
 
 
 module.exports = router;

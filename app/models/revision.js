@@ -9,7 +9,8 @@ var RevisionSchema = new mongoose.Schema(
 			title: String, 
 		 	timestamp:Date, 
 		 	user:String, 
-		 	anon:String
+		 	anon:String,
+		 	type:String
 		},
 		{
 		 	versionKey: false
@@ -115,22 +116,7 @@ RevisionSchema.statics.findByYearAndType = function()
 
 RevisionSchema.statics.findByYearAndTypeForArticle = function(title)
 {
-	// return Revision.aggregate(
- //        [
- //        		{
- //        		  $match : { title: article }
- //        		},
- //            {
- //                $group : {
- //                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
- //                   count: { $sum: 1 }
- //                }
- //            },
- //            {
- //                $sort : { '_id.year': 1, 'user_type': 1 }
- //            },
- //        ]
- //    )
+
     return this.aggregate()
     .match({
     	title: title
