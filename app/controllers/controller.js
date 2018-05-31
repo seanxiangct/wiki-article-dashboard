@@ -2012,6 +2012,9 @@ module.exports.individualModal = function(req, res)
         latestRevTime = latestRev[0].timestamp.toISOString();
         //console.log(latestRevTime); 
 
+        // check if data is up to date
+        
+
         client.getArticleRevisions(title, latestRevTime, function(err, data) {
             // error handling
             if (err) {
@@ -2044,12 +2047,8 @@ module.exports.individualModal = function(req, res)
                     data[i].timestamp = new Date(data[i].timestamp);
 
                     // insert to db
-                    //Revision.insertNewRevision(data[i])
-                    //.then(function(result) {
-                    //console.log(result);
-                    //}).catch(function(err) {
-                    //console.log("Caanot insert data");
-                    //})
+                    var newDoc = new Revision(data[i]);
+                    newDoc.save();
                 }
 
                 res.render('templates/modal.ejs', {downloadNum: dlNum, adminNum: adminNum, botNum: botNum, anonNum: anonNum, regNum: regNum});
