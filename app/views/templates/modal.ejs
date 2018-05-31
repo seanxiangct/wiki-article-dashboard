@@ -1,10 +1,20 @@
 
 
         <!-- Modal content -->
+
         <div class="modal-content">
-          <span class="close">&times;</span>
-          <p>
-              <%= downloadNum %> new revisions were downloaded.
-            </p>
-        </div>
+            <div class="modal-header">
+              <span class="close">&times;</span>
+              <h2>Revision data update</h2>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    <%= downloadNum %> new revisions were downloaded.
+                </h4>
+                <p> New revisions were made by: </p>
+                <p>
+                    <%=regNum %> regular users, <%= adminNum %> admin users, <%= botNum %> bot users, <%= anonNum %> anonymous users.
+                </p>
+            </div>
+          </div>
       
