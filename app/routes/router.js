@@ -18,6 +18,7 @@ router.get('/age', controller.numAge);
 // individual
 router.get('/individual', controller.individualPage);
 router.get('/individualresult', controller.individualResult);
+router.get('/individualmodal', controller.individualModal);
 
 
 // data acquisition routes
