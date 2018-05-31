@@ -2010,50 +2010,55 @@ module.exports.individualModal = function(req, res)
     })
     .then(function(latestRev) {
         latestRevTime = latestRev[0].timestamp.toISOString();
-        //console.log(latestRevTime); 
 
         // check if data is up to date
-        
-
-        client.getArticleRevisions(title, latestRevTime, function(err, data) {
-            // error handling
-            if (err) {
-              console.log(err);
-              return;
-            } else {
-                dlNum = String(data.length - 1);
-                let adminNum = 0;
-                let botNum = 0;
-                let anonNum = 0;
-                let regNum = 0;
-                
-                for (let i = 1, size = data.length; i < size; i++) {
-                    data[i]['title'] = title;
-                    // create 'type' field
-                    if (admin.indexOf(data[i].user) >= 0) {
-                        data[i]['type'] = 'admin';
-                        adminNum++;
-                    }else if (bot.indexOf(data[i].user) >= 0) {
-                        data[i]['type'] = 'bot';
-                        botNum++;
-                    }else if(data[0].hasOwnProperty('anon')) {
-                        data[i]['type'] = 'anon';
-                        anonNum++;
-                    }else {
-                        data[i]['type'] = 'reg';
-                        regNum++;
+        var ONE_DAY = 24 * 60 * 60 * 1000; // in ms
+        if (((new Date) - latestRev[0].timestamp) < ONE_DAY) {
+            res.render('templates/modal.ejs', {message1: "Database is up to date.", message2: "No data downloaded."});
+        }else{
+            client.getArticleRevisions(title, latestRevTime, function(err, data) {
+                // error handling
+                if (err) {
+                  console.log(err);
+                  return;
+                } else {
+                    dlNum = String(data.length - 1);
+                    let adminNum = 0;
+                    let botNum = 0;
+                    let anonNum = 0;
+                    let regNum = 0;
+                    
+                    for (let i = 1, size = data.length; i < size; i++) {
+                        data[i]['title'] = title;
+                        // create 'type' field
+                        if (admin.indexOf(data[i].user) >= 0) {
+                            data[i]['type'] = 'admin';
+                            adminNum++;
+                        }else if (bot.indexOf(data[i].user) >= 0) {
+                            data[i]['type'] = 'bot';
+                            botNum++;
+                        }else if(data[0].hasOwnProperty('anon')) {
+                            data[i]['type'] = 'anon';
+                            anonNum++;
+                        }else {
+                            data[i]['type'] = 'reg';
+                            regNum++;
+                        }
+                        // timestamp string to date
+                        data[i].timestamp = new Date(data[i].timestamp);
+    
+                        // insert to db
+                        var newDoc = new Revision(data[i]);
+                        newDoc.save();
                     }
-                    // timestamp string to date
-                    data[i].timestamp = new Date(data[i].timestamp);
-
-                    // insert to db
-                    var newDoc = new Revision(data[i]);
-                    newDoc.save();
+    
+                    res.render('templates/modal.ejs', 
+                    {message1: dlNum + " new revisions were downloaded.", 
+                    message2: "New revisions were made by: " + regNum + " regular users, " +
+                    adminNum + " admin users, " + botNum + " bot users, " + anonNum + " anonymous users."});
                 }
-
-                res.render('templates/modal.ejs', {downloadNum: dlNum, adminNum: adminNum, botNum: botNum, anonNum: anonNum, regNum: regNum});
-            }
-          });
+              });
+        }
 
     })
 }
