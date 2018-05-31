@@ -1597,7 +1597,8 @@ module.exports.getGroupBarData = function(req, res)
     }).catch(function(err) {
         console.log(err);
         console.log("Cannot get group bar data");
-    })
+        console.log(err)
+    });
 }
 
 module.exports.getIndividualBarData = function(req, res)
@@ -1611,10 +1612,24 @@ module.exports.getIndividualBarData = function(req, res)
 
 }
 
+module.exports.getTop5Users = function(req, res)
+{
+    var title = req.query.title;
+    Revision.topNUsersForArticle(title, 5)
+    .then(function(result) {
+        res.render('templates/multi_select.ejs', {topUsers: result});
+    })
+    .catch(function(err) {
+        console.log(err);
+    })
+}
+
 module.exports.getIndividualBarDataTopUsers = function(req, res)
 {
     // find the top n users for this article
     var title = req.query.title;
+
+    // var numUsers = req.query.num_user.num_user;
     Revision.topNUsersForArticle(title, 5)
     .then(function(result) {
         // find the revision number for each user
@@ -1645,7 +1660,34 @@ module.exports.getIndividualBarDataTopUsers = function(req, res)
     }).catch(function(err) {
         console.log('Cannot get individual user bar data');
     })
-    .then()
+}
+
+module.exports.getIndividualBarDataSelectedUsers = function(req, res)
+{
+    // find the top n users for this article
+    var title = req.query.title.title;
+    var users = req.query.users;
+
+    promises = []
+    for (var i in users)
+    {
+        promises.push(Revision.numRevByYear(title, users[i]));
+    }
+    Promise.all(promises)
+    .then(function(user_counts) {
+        var data = [];
+        // unpack data
+        for (var j in user_counts)
+        {
+            data[j] = [
+                users[j],
+                user_counts[j]
+            ]
+        }
+        res.json(data);
+    }).catch(function(err) {
+        console.log("Cannot cannot get individual user data");
+    });
 
 }
 
@@ -1923,7 +1965,6 @@ module.exports.individualPage = function(req, res)
     .then(function() {
         res.render('templates/individual.ejs', {titleOptions : titleList});
     })
-    
 }
 
 module.exports.individualResult = function(req,res)

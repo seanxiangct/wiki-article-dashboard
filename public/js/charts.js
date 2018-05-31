@@ -11,9 +11,6 @@ function load_charts()
     else if ($("#analysis").hasClass('individual')){
         google.charts.setOnLoadCallback(individual_charts);
     }
-    else if ($("#analysis").hasClass('author')){
-        google.charts.setOnLoadCallback(author_charts);
-    }
     else{
         google.charts.setOnLoadCallback(group_charts);
     }
@@ -28,23 +25,40 @@ function group_charts()
 function individual_charts()
 {
     $(document).on('click', '#titleokay', function(){
-        var titleInput = {title: $("#titlelist").val()};
-        $.getJSON('/individualBar', titleInput, function(data) {
-            draw_bar(data);
-        });
-        $.getJSON('/individualPie', titleInput, function(data) {
-            draw_pie(data);
-        });
-        $.getJSON('/individualUserBar', titleInput, function(data) {
-            draw_bar_user(data);
-        });
+        draw_individual_charts();
+    });
 
+
+    $(document).on('click', '#chart-ok', function(){
+        draw_individual_charts();
     });
 }
 
-function author_charts()
+function draw_individual_charts()
 {
 
+    var titleInput = {title: $("#titlelist").val()};
+    $.getJSON('/individualBar', titleInput, function(data) {
+        draw_bar(data);
+    });
+    $.getJSON('/individualPie', titleInput, function(data) {
+        draw_pie(data);
+    });
+    if ($('#user-select').val() == null)
+    {
+        $.getJSON('/individualUserBar', titleInput, function(data) {
+            draw_bar_user(data);
+        });
+    } else {
+        var users = $('#user-select').val();
+        var param = {
+            title: titleInput,
+            users: users
+        };
+        $.getJSON('/individualSelectedUserBar', param, function(data) {
+            draw_bar_user(data);
+        });        
+    }
 }
 
 function group_pie()
@@ -68,8 +82,8 @@ function group_bar()
 function draw_pie(data)
 {
         var options = {
-                width: 400,
-                height: 300
+                width: 500,
+                height: 500
             };
         graphData = new google.visualization.DataTable();
         // defineing data table columns

@@ -19,11 +19,12 @@
 	<link href="css/analytics.css" rel="stylesheet">
 
 	<!-- jQuery has to be loaded in head section-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	<script>
 		window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')
 	</script>
 	<!-- <script src="js/ejs.js"></script> -->
+
 
 </head>
 
@@ -141,6 +142,20 @@
                 var jqxhr = $.get( '/individualmodal',titleInput);
                 jqxhr.done(function(result) {
                     $('#indivModal').html(result);
+
+                    var top5 = $.get('/top5Users', titleInput);
+                    top5.done(function(users) {
+                        $('#user-select-container').html(users);
+                        $('#user-select').multiselect({
+                            includeSelectAllOption: true,
+                            selectAllValue: 'select-all-value'
+                        });
+                    });
+
+                    top5.fail(function(top5) {
+                        $('#user-select-container').html(top5.status);
+
+                    })
                 });
                 jqxhr.fail(function(jqXHR){
                     $('#indivModal').html("Response status:" + jqXHR.status)
@@ -155,13 +170,14 @@
                 var jqxhr = $.get( '/individualresult',titleInput);
                 jqxhr.done(function(result) {
                     $('#individualResult').html(result);
+
                 });
                 jqxhr.fail(function(jqXHR){
                     $('#individualResult').html("Response status:" + jqXHR.status)
                     //console.log("Response status:" + jqXHR.status)
                 });
-            });
-         
+            })
+
             $(document).on('click', '#option1', function(){
 			    document.getElementById('bar-chart-container').style.display = '';
 			    document.getElementById('pie-chart-container').style.display = 'none';
@@ -181,15 +197,15 @@
                 document.getElementById('pie-chart-container').style.display = 'none';
                 if ($('#bar-chart-container-2').length != 0)
                     document.getElementById('bar-chart-container-2').style.display = '';
-            });           
+            }); 
+        });           
 
-		});
 
 	</script> 
 
 	<!-- Bootstrap core JavaScript -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
 	<!-- Google charts scripts -->
@@ -197,6 +213,10 @@
 
 	<!-- local script -->
 	<script src="js/charts.js"></script>
+
+    <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+    <!-- multi-select stylesheet -->
+    <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/> 
 
 	<script>
 
