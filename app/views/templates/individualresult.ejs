@@ -1,13 +1,28 @@
+
 <h2>Individual analysis result</h2>
-<p> Title: 
+<h4> <b>Title: </b>  
 <%= title %>
-</p>
-<p> Total number of revision: 
+</h4>
+<h4> <b>Total number of revision: </b>
 <%= numRev %>
-</p>
-<p> Top 5 regular users who revised the article the most: </p>
-        <% for (let i = 0, size = topUsers.length; i < size; i++) {%>
-            <p>
-                <%= topUsers[i]._id %> (<%=topUsers[i].numOfEdits %>)
-            </p>
-        <% } %> 
+</h4>
+
+<table id="indivResultTable">
+        <caption>Top 5 Regular Users</caption>
+          <thead>
+            <tr>
+              <th scope=“col”>User</th>
+              <th scope=“col”>Number of revisions</th>
+            </tr>
+          </thead>
+          <tbody>
+                <% for (let i = 0, size = topUsers.length; i < size; i++) {%>
+                    <tr>
+                        <td><%= topUsers[i]._id %></td>
+                        <td><%=topUsers[i].numOfEdits %> </td>
+                    </tr>
+                <% } %> 
+          </tbody>
+        </table>
+        
+

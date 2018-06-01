@@ -1595,6 +1595,7 @@ module.exports.getGroupBarData = function(req, res)
     .then(function(result) {
         res.json(result);
     }).catch(function(err) {
+        console.log(err);
         console.log("Cannot get group bar data");
         console.log(err)
     });
@@ -1720,6 +1721,7 @@ module.exports.showAnalyticsPage = function(req, res)
     var lowestUniqueUserRes = [];
     var highestAgeRes = [];
     var lowestAgeRes = [];
+    var titleNum;
     
     Promise.resolve(Revision.findTitleHighestNoRev(3))
     .then(undefined, function(err) {
@@ -1747,7 +1749,7 @@ module.exports.showAnalyticsPage = function(req, res)
     })
     .then(function() {
         return new Promise(function(resolve, reject) {
-            resolve(Revision.findTitleHighestUniqueUsers(1));
+            resolve(Revision.findTitleHighestUniqueUsers(3));
         })
     })
     .then(undefined, function(err) {
@@ -1761,7 +1763,7 @@ module.exports.showAnalyticsPage = function(req, res)
     })
     .then(function() {
         return new Promise(function(resolve, reject) {
-            resolve(Revision.findTitleLowestUniqueUsers(1));
+            resolve(Revision.findTitleLowestUniqueUsers(3));
         })
     })
     .then(undefined, function(err) {
@@ -1814,14 +1816,18 @@ module.exports.showAnalyticsPage = function(req, res)
         }
     })
     .then(function() {
-        // console.log(highestRevRes);
-        // console.log(lowestRevRes);
-        // console.log(highestUniqueUserRes);
-        // console.log(lowestUniqueUserRes);
-        // console.log(highestAgeRes);
-        // console.log(lowestAgeRes);
-
-        res.render('analytics.ejs', {top_revisions: highestRevRes, bottom_revisions: lowestRevRes, top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleNames());
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+    })
+    .then(function(titleNames) {
+        titleNum = titleNames.length;
+    })
+    .then(function() {
+        res.render('analytics.ejs', {numLimit: titleNum, top_revisions: highestRevRes, bottom_revisions: lowestRevRes, top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
     })
 }
 
@@ -1949,21 +1955,21 @@ module.exports.numAge = function(req, res)
 
 module.exports.individualPage = function(req, res) 
 {
-    var titleList = [];
-    Promise.resolve(Revision.findTitleNames())
+    var optionList = [];
+    
+    Promise.resolve(Revision.findTitleNamesRev())
     .then(undefined, function(err) {
-        console.log(err);
-        
+        console.log(err);  
     })
-    .then(function(distinctTitles) {
-        for (let i = 0, size = distinctTitles.length; i < size; i++) { 
-        titleList[i] = distinctTitles[i];
-        }
-        // console.log(titleList);
+    .then(function(titleNumRev) {
+        for (let i = 0, size = titleNumRev.length; i < size; i++) { 
+            optionList[i] = titleNumRev[i];
+            }
     })
     .then(function() {
-        res.render('templates/individual.ejs', {titleOptions : titleList});
+        res.render('templates/individual.ejs', {titleOptions : optionList});
     })
+
 }
 
 module.exports.individualResult = function(req,res)
@@ -2009,47 +2015,55 @@ module.exports.individualModal = function(req, res)
     })
     .then(function(latestRev) {
         latestRevTime = latestRev[0].timestamp.toISOString();
-        //console.log(latestRevTime); 
 
-        client.getArticleRevisions(title, latestRevTime, function(err, data) {
-            // error handling
-            if (err) {
-              console.log(err);
-              return;
-            } else {
-                dlNum = String(data.length - 1);
-                let adminNum = 0;
-                let botNum = 0;
-                let anonNum = 0;
-                let regNum = 0;
-                // insert data to db
-                for (let i = 1, size = data.length; i < size; i++) {
-                    data[i]['title'] = title;
-                    if (admin.indexOf(data[i].user) >= 0) {
-                        data[i]['type'] = 'admin';
-                        adminNum++;
-                    }else if (bot.indexOf(data[i].user) >= 0) {
-                        data[i]['type'] = 'bot';
-                        botNum++;
-                    }else if(data[0].hasOwnProperty('anon')) {
-                        data[i]['type'] = 'anon';
-                        anonNum++;
-                    }else {
-                        data[i]['type'] = 'reg';
-                        regNum++;
+        // check if data is up to date
+        var ONE_DAY = 24 * 60 * 60 * 1000; // in ms
+        if (((new Date) - latestRev[0].timestamp) < ONE_DAY) {
+            res.render('templates/modal.ejs', {heading: "Database is up to date.", message1: "No data downloaded.", message2: ""});
+        }else{
+            client.getArticleRevisions(title, latestRevTime, function(err, data) {
+                // error handling
+                if (err) {
+                  console.log(err);
+                  return;
+                } else {
+                    dlNum = String(data.length - 1);
+                    let adminNum = 0;
+                    let botNum = 0;
+                    let anonNum = 0;
+                    let regNum = 0;
+                    
+                    for (let i = 1, size = data.length; i < size; i++) {
+                        data[i]['title'] = title;
+                        // create 'type' field
+                        if (admin.indexOf(data[i].user) >= 0) {
+                            data[i]['type'] = 'admin';
+                            adminNum++;
+                        }else if (bot.indexOf(data[i].user) >= 0) {
+                            data[i]['type'] = 'bot';
+                            botNum++;
+                        }else if(data[0].hasOwnProperty('anon')) {
+                            data[i]['type'] = 'anon';
+                            anonNum++;
+                        }else {
+                            data[i]['type'] = 'reg';
+                            regNum++;
+                        }
+                        // timestamp string to date
+                        data[i].timestamp = new Date(data[i].timestamp);
+    
+                        // insert to db
+                        var newDoc = new Revision(data[i]);
+                        newDoc.save();
                     }
-                    //Revision.insertNewRevision(data[i])
-                    //.then(function(result) {
-                    //console.log(result);
-                    //}).catch(function(err) {
-                    //console.log("Caanot insert data");
-                    //})
+    
+                    res.render('templates/modal.ejs', 
+                    {heading: "Data update requested", message1: dlNum + " new revisions were downloaded.", 
+                    message2: "(New revisions were made by: " + regNum + " regular users, " +
+                    adminNum + " admin users, " + botNum + " bot users, " + anonNum + " anonymous users. )"});
                 }
-                console.log(data);
-
-                res.render('templates/modal.ejs', {downloadNum: dlNum, adminNum: adminNum, botNum: botNum, anonNum: anonNum, regNum: regNum});
-            }
-          });
+              });
+        }
 
     })
 }

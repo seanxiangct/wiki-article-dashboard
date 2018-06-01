@@ -193,15 +193,23 @@ RevisionSchema.statics.totalNumRevForUserAndArticle = function(title, type)
 	return this.find({title: title, type: type}).count()
 }
 
-// find distinct title names
+// find distinc title names
 RevisionSchema.statics.findTitleNames = function()
 {
 	return this.distinct('title')
 }
 
+// find title names and number of revisions
+RevisionSchema.statics.findTitleNamesRev = function()
+{
+	return this.aggregate()
+	.group({_id:"$title", numOfEdits: {$sum:1}})
+	.sort('_id')
+	.exec()
+}
+
 RevisionSchema.statics.totalNumRev = function(title)
 {
-	console.log(title)
 	return this.find({title: title}).count()
 }
 
@@ -214,11 +222,6 @@ RevisionSchema.statics.topRevisionRegUsers = function(title){
 	.limit(5)
 	.exec()
 }
-
-// insert new revision data
-//RevisionSchema.statics.insertNewRevision = function(data){
-//	return this.insertOne( data )
-//}
 
 // model is a schema binded with a collection
 // Schema.model(model_name, schema variable, collection name)

@@ -2,11 +2,11 @@
         <!-- Example row of columns -->
         <div class="row">
             <h3>Select an article</h3>
-                <label for="titlelist">Title:  </label>
+                <label for="titlelist">Title (Total revisions):  </label>
                 <select id="titlelist">
                         <% for (let i = 0, size = titleOptions.length; i < size; i++) {%>
-                            <option>
-                                <%= titleOptions[i] %>
+                            <option value="<%= titleOptions[i]._id %>" >
+                                <%= titleOptions[i]._id %> (<%= titleOptions[i].numOfEdits %>) 
                             </option>
                         <% } %>    
                 </select>

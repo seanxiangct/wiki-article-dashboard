@@ -5,15 +5,14 @@
         <div class="modal-content">
             <div class="modal-header">
               <span class="close">&times;</span>
-              <h2>Revision data update</h2>
+              <h2><%= heading %> </h2>
             </div>
             <div class="modal-body">
                 <h4>
-                    <%= downloadNum %> new revisions were downloaded.
+                    <%= message1 %>
                 </h4>
-                <p> New revisions were made by: </p>
                 <p>
-                    <%=regNum %> regular users, <%= adminNum %> admin users, <%= botNum %> bot users, <%= anonNum %> anonymous users.
+                  <%= message2 %>
                 </p>
             </div>
           </div>

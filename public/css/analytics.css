@@ -11,7 +11,7 @@ body {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 10; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -44,3 +44,38 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+
+table {  
+    text-align: center;
+    border: collapse; 
+    border-spacing: 0;
+ }
+ 
+ table tbody td{
+    border-top: 1pt solid #95BEF0;
+    border-bottom:  1pt solid #95BEF0;
+    line-height: 1.5em;
+    vertical-align: middle;
+    padding: 0.5em 0.75em;
+ }
+
+ table thead th {
+    padding: 0.25em 0.75em; 
+ }
+ table thead {
+    background-color: #EBF4FB ;
+    text-align: center;
+ }
+
+ td:first-child {
+     text-align: left;
+ }
+ 
+ 
+ caption {
+    background-color: #95BEF0;  
+    padding: 0.5em 0.5em; 
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: center;
+ }
