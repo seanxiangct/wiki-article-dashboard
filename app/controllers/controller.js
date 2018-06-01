@@ -1721,6 +1721,7 @@ module.exports.showAnalyticsPage = function(req, res)
     var lowestUniqueUserRes = [];
     var highestAgeRes = [];
     var lowestAgeRes = [];
+    var titleNum;
     
     Promise.resolve(Revision.findTitleHighestNoRev(3))
     .then(undefined, function(err) {
@@ -1748,7 +1749,7 @@ module.exports.showAnalyticsPage = function(req, res)
     })
     .then(function() {
         return new Promise(function(resolve, reject) {
-            resolve(Revision.findTitleHighestUniqueUsers(1));
+            resolve(Revision.findTitleHighestUniqueUsers(3));
         })
     })
     .then(undefined, function(err) {
@@ -1762,7 +1763,7 @@ module.exports.showAnalyticsPage = function(req, res)
     })
     .then(function() {
         return new Promise(function(resolve, reject) {
-            resolve(Revision.findTitleLowestUniqueUsers(1));
+            resolve(Revision.findTitleLowestUniqueUsers(3));
         })
     })
     .then(undefined, function(err) {
@@ -1815,14 +1816,18 @@ module.exports.showAnalyticsPage = function(req, res)
         }
     })
     .then(function() {
-        // console.log(highestRevRes);
-        // console.log(lowestRevRes);
-        // console.log(highestUniqueUserRes);
-        // console.log(lowestUniqueUserRes);
-        // console.log(highestAgeRes);
-        // console.log(lowestAgeRes);
-
-        res.render('analytics.ejs', {top_revisions: highestRevRes, bottom_revisions: lowestRevRes, top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
+        return new Promise(function(resolve, reject) {
+            resolve(Revision.findTitleNames());
+        })
+    })
+    .then(undefined, function(err) {
+        console.log(err);
+    })
+    .then(function(titleNames) {
+        titleNum = titleNames.length;
+    })
+    .then(function() {
+        res.render('analytics.ejs', {numLimit: titleNum, top_revisions: highestRevRes, bottom_revisions: lowestRevRes, top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes, oldest_articles: highestAgeRes, youngest_articles: lowestAgeRes});
     })
 }
 

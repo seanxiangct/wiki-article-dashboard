@@ -193,7 +193,13 @@ RevisionSchema.statics.totalNumRevForUserAndArticle = function(title, type)
 	return this.find({title: title, type: type}).count()
 }
 
-// find distinct title names
+// find distinc title names
+RevisionSchema.statics.findTitleNames = function()
+{
+	return this.distinct('title')
+}
+
+// find title names and number of revisions
 RevisionSchema.statics.findTitleNamesRev = function()
 {
 	return this.aggregate()
