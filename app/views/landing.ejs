@@ -13,7 +13,7 @@
 	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
-	<title>Wiki Analytics</title>
+	<title>WikiLatic</title>
 </head>
 <body>
 	<header>
@@ -22,16 +22,9 @@
 				<div class="row">
 					<div class="col-sm-8 col-md-7 py-4">
 						<h4 class="text-white">About</h4>
-						<p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+						<p class="text-muted">This project is about building a standalone Web Application for Wikipedia Article Data Analytics from scratch. It considered three aspects of the Wikipedia Articles, global distribution, individual analysis and author analysis. Both tabular and graphical representation of the data with user interactivity is included in their own sections and constantly updated using MediaWiki API. </p>
 					</div>
-					<div class="col-sm-4 offset-md-1 py-4">
-						<h4 class="text-white">Contact</h4>
-						<ul class="list-unstyled">
-							<li><a href="#" class="text-white">Follow on Twitter</a></li>
-							<li><a href="#" class="text-white">Like on Facebook</a></li>
-							<li><a href="#" class="text-white">Email me</a></li>
-						</ul>
-					</div>
+
 				</div>
 			</div>
 		</div>
@@ -123,33 +116,36 @@
 
 							<div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-								<form class="form-signin" action="/signUp" method="post">
+								<form class="form-register" action="/signUp" method="post">
+									<div class="row">
+										<div class="col">
+											<label for="optional"><strong>Optional</strong></label>
+											<label for="inputFirst" class="sr-only">First Name</label>
+											<input type="text" name="user[first]" id="inputFirst" class="form-control" placeholder="First Name" autofocus>
 
-									<div class="form-group">
-										<label for="optional"><strong>Optional</strong></label>
-										<label for="inputFirst" class="sr-only">First Name</label>
-										<input type="text" name="user[first]" id="inputFirst" class="form-control" placeholder="First Name" autofocus>
+											<label for="inputLast" class="sr-only">Last Name</label>
+											<input type="text" name="user[last]" id="inputLast" class="form-control" placeholder="Last Name" >
 
-										<label for="inputLast" class="sr-only">Last Name</label>
-										<input type="text" name="user[last]" id="inputLast" class="form-control" placeholder="Last Name" >
+											<label for="inputEmail" class="sr-only">Email address</label>
+											<input type="email" name="user[email]" id="inputEmail" class="form-control" placeholder="Email Address">
+										</div>                                    
 
-										<label for="inputEmail" class="sr-only">Email address</label>
-										<input type="email" name="user[email]" id="inputEmail" class="form-control" placeholder="Email Address">
-									</div>                                    
+										<div class="col">
+											<label for="required"><strong>Required</strong></label>
+											<label for="inputUsernameReg" class="sr-only">Username</label>
+											<input type="text" name="user[name]" id="inputUsernameReg" class="form-control" placeholder="Username" required>
 
-									<div class="form-group">
-										<label for="required"><strong>Required</strong></label>
-										<label for="inputUsernameReg" class="sr-only">Username</label>
-										<input type="text" name="user[name]" id="inputUsernameReg" class="form-control" placeholder="Username" required>
+											<label for="inputPasswordReg" class="sr-only">Password</label>
+											<input type="password" name="user[psw]" id="inputPasswordReg" class="form-control" placeholder="Password" required>
 
-										<label for="inputPasswordReg" class="sr-only">Password</label>
-										<input type="password" name="user[psw]" id="inputPasswordReg" class="form-control" placeholder="Password" required>
-
-										<label for="inputRepeat" class="sr-only">Confirm Password</label>
-										<input type="password" name="user[repeat]" id="inputRepeat" class="form-control" placeholder="Confirm Password" required>
+											<label for="inputRepeat" class="sr-only">Confirm Password</label>
+											<input type="password" name="user[repeat]" id="inputRepeat" class="form-control" placeholder="Confirm Password" required>
+										</div>
 									</div>
 
-									<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+
+
+									<button id="register-submit" class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
 								</form>
 							</div>
 						</div>    
