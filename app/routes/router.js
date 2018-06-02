@@ -18,11 +18,13 @@ router.get('/age', controller.numAge);
 // individual
 router.get('/individual', controller.individualPage);
 router.get('/individualresult', controller.individualResult);
+router.get('/individualmodal', controller.individualModal);
+
 // author
 router.get('/authorSearchResult', controller.authorSearchResult);
 router.get('/authorArticleChanges', controller.authorArticleChanges);
 router.get('/authorRevisions', controller.authorRevisions);
-router.get('/individualmodal', controller.individualModal);
+router.get('/authorTable', controller.authorTable);
 
 
 // data acquisition routes

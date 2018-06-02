@@ -112,7 +112,6 @@
                 $("#analysis").removeClass('group');
                 $("#analysis").removeClass('individual');
                 $("#analysis").addClass('author');
-                $.getScript('js/charts.js')
 			});
 
             $(document).on('click', '#okay1', function(){
@@ -195,10 +194,8 @@
                 });
 			})
 			
-			$(document).on('keyup','#authorSearchLabel', function(){
-				console.log("Handler for .keyup() called.");
-				var searchInput = {user: $("#authorSearchLabel").val()};
-				console.log(searchInput.user.length);
+			$(document).on('keyup','#authorSearchInput', function(){
+				var searchInput = {user: $("#authorSearchInput").val()};
 				if (searchInput.user.length > 2) {
 					var jqxhr = $.get( '/authorSearchResult',searchInput);
 					jqxhr.done(function(result) {
@@ -211,33 +208,47 @@
 				}
 			});
 
-			$(document).on('click', '#authorSearchButton', function(){
-				var selectedUser = {user: $("#authorSearchLabel").val()};
-                var jqxhr = $.get( '/authorArticleChanges',selectedUser);
-                jqxhr.done(function(result) {
-                    $('#authorResult').html(result);
-                });
-                jqxhr.fail(function(jqXHR){
-                    $('#authorResult').html("Response status:" + jqXHR.status)
-                    //console.log("Response status:" + jqXHR.status)
-                });
-			})
+			// $(document).on('click', '#authorSearchButton', function(){
+			// 	var selectedUser = {user: $("#authorSearchInput").val()};
+   //              var jqxhr = $.get( '/authorArticleChanges',selectedUser);
+   //              jqxhr.done(function(result) {
+   //                  $('#authorResult').html(result);
+   //              });
+   //              jqxhr.fail(function(jqXHR){
+   //                  $('#authorResult').html("Response status:" + jqXHR.status)
+   //                  //console.log("Response status:" + jqXHR.status)
+   //              });
+			// })
 
-			$(document).on('click', '#articleSearchButton', function(){
-				var selectedUser = {user: $("#authorSearchLabel").val()};
-				var valString = {title: $("#changeList").val()};
-				var selectedTitle = valString.title.substring(0, valString.title.indexOf('|'));
-				selectedTitle = selectedTitle.trim();
-				var data = {user: selectedUser.user, title: selectedTitle};
-                var jqxhr = $.get( '/authorRevisions',data);
+			// $(document).on('click', '#articleSearchButton', function(){
+			// 	var selectedUser = {user: $("#authorSearchInput").val()};
+			// 	var valString = {title: $("#changeList").val()};
+			// 	var selectedTitle = valString.title.substring(0, valString.title.indexOf('|'));
+			// 	selectedTitle = selectedTitle.trim();
+			// 	var data = {user: selectedUser.user, title: selectedTitle};
+   //              var jqxhr = $.get( '/authorRevisions',data);
+   //              jqxhr.done(function(result) {
+   //                  $('#authorRevisionResult').html(result);
+   //              });
+   //              jqxhr.fail(function(jqXHR){
+   //                  $('#authorResult').html("Response status:" + jqXHR.status)
+   //                  //console.log("Response status:" + jqXHR.status)
+   //              });
+			// })
+
+            $(document).on('click', '#authorSearchButton', function(){
+                var selectedUser = {user: $("#authorSearchInput").val()};
+                var jqxhr = $.get( '/authorTable',selectedUser);
                 jqxhr.done(function(result) {
-                    $('#authorRevisionResult').html(result);
+                    console.log(result)
+                    $('#author-table-container').html(result);
                 });
                 jqxhr.fail(function(jqXHR){
-                    $('#authorResult').html("Response status:" + jqXHR.status)
+                    $('#author-table-container').html("Response status:" + jqXHR.status)
                     //console.log("Response status:" + jqXHR.status)
                 });
-			})
+
+            });
 
             $(document).on('click', '#option1', function(){
 			    document.getElementById('bar-chart-container').style.display = '';

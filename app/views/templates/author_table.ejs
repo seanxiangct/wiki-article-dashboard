@@ -1,0 +1,32 @@
+        <div id="table-result">
+                <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th>Article Name</th>
+                            <th>Number of Revisions</th>
+                        </tr>
+                    </thead>
+
+                    <% for (let i = 0, size = data.length; i < size; i++) {%>
+                        <!-- main row -->
+                        <tbody>
+                            <tr class="clickable" data-toggle="collapse" data-target="#group-of-rows-<%= i%>" aria-expanded="false" aria-controls="group-of-rows-<%= i%>">
+                                <td><%= data[i][0]._id %></td>  
+                                <td><%= data[i][0].numOfEdits %></td>
+                            </tr>
+                        </tbody>
+                        <!-- collapsable row -->
+                        <tbody id="group-of-rows-<%= i%>" class="collapse">
+
+                            <% for (let j = 0, size = data[i][1].length; j < size; j++) {%>
+                                <tr>
+                                    <td class="table-sub-row" colspan="2"><%= data[i][1][j].timestamp %></td>
+                                </tr>
+                            <% } %>    
+
+                        </tbody>
+                    <% } %>    
+
+                </table>                
+
+        </div>

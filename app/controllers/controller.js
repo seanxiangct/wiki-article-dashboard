@@ -190,7 +190,7 @@ module.exports.getIndividualBarDataSelectedUsers = function(req, res)
     var title = req.query.title.title;
     var users = req.query.users;
 
-    promises = []
+    var promises = []
     for (var i in users)
     {
         promises.push(Revision.numRevByYear(title, users[i]));
@@ -531,21 +531,21 @@ module.exports.authorSearchResult = function(req,res)
     var searchLength = authorSearch.length;
     var authorList = [];
 
-    console.log(authorSearch);
+    // console.log(authorSearch);
 
     Promise.resolve(Revision.findUserNames())
     .then(undefined, function(err) {
         console.log(err);
     })
     .then(function(distinctUsers) {
-        console.log(distinctUsers);
+        // console.log(distinctUsers);
         for (let i = 0, size = distinctUsers.length; i < size; i++) {
             if (authorSearch.toUpperCase() == distinctUsers[i].substring(0,searchLength).toUpperCase()) {
                 authorList.push(distinctUsers[i]);
             }
         }
         authorList.sort();
-        console.log(authorList);
+        // console.log(authorList);
     })
     .then(function() {
         res.render('templates/authorsearch.ejs', {authorOptions: authorList});
@@ -565,7 +565,7 @@ module.exports.authorArticleChanges = function(req, res)
         for (let i = 0, size = articleChanges.length; i < size; i++) { 
             articleChangeList[i] = articleChanges[i];
         }
-        console.log(articleChangeList);
+        // console.log(articleChangeList);
     })
     .then(function() {
         res.render('templates/authorchanges.ejs', {articleChanges : articleChangeList});
@@ -589,13 +589,56 @@ module.exports.authorRevisions = function(req, res)
                 authorTitleRevisions.push({timestamp: authorRevisions[i].timestamp});
             }
         }
-        console.log(selectedTitle);
-        console.log(authorTitleRevisions);
+        // console.log(selectedTitle);
+        // console.log(authorTitleRevisions);
     })
     .then(function() {
         res.render('templates/authorrevisions.ejs', {titleRevisions : authorTitleRevisions, title: selectedTitle});
     })
 }  
+
+module.exports.authorTable = function(req, res)
+{
+    var user = req.query.user;
+    var articleChangeList = [];
+    var authorTitleRevisions = [];
+    var titles = [];
+
+    Promise.resolve(Revision.findArticleChanges(user))
+    .then(undefined, function(err) {
+        console.log(err);
+    })
+    .then(function(articleChanges) {
+        for (let i = 0, size = articleChanges.length; i < size; i++) { 
+            articleChangeList[i] = articleChanges[i];
+            titles[i] = articleChangeList[i]._id;
+        }
+        // console.log(articleChangeList);
+        var promises = [];
+        for (var i in titles)
+        {
+            promises.push(Revision.findUserRevisionsForTitle(user, titles[i]));
+        }
+        Promise.all(promises)
+        .then(function(result) {
+
+            var data = [];
+            for (var j in result)
+            {
+                data[j] = [
+                    articleChangeList[j],
+                    result[j]
+                ]
+            }
+
+            res.render('templates/author_table.ejs', {data: data});
+        }).catch(function(err) {
+            console.log("Cannot create author table");
+        });        
+    })
+
+
+}
 
 module.exports.individualModal = function(req, res) 
 {

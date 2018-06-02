@@ -58,3 +58,9 @@
     margin-bottom: 1em;
     margin-top: 1em;
 }
+
+/* collapsable table */
+#table-result .table-sub-row {
+    background-color: #e9ecef;
+}
+

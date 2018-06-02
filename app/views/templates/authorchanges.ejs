@@ -1,12 +1,22 @@
 <!-- Return articles changed by a specific user as a dropdown list -->
 
-<h3>Select an article</h3>
-<label for="changeList">Title:  </label>
-<select id="changeList">
-        <% for (let i = 0, size = articleChanges.length; i < size; i++) {%>
-            <option>
-                <%= articleChanges[i]._id %> | <%= articleChanges[i].numOfEdits %> revisions
-            </option>
-        <% } %>    
-</select>
-<button id="articleSearchButton">OK</button>
+<div class="row">
+    
+    <h3>Select an article</h3>
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <select id="changeList">
+                    <% for (let i = 0, size = articleChanges.length; i < size; i++) {%>
+                        <option>
+                            <%= articleChanges[i]._id %> | <%= articleChanges[i].numOfEdits %> revisions
+                        </option>
+                    <% } %>    
+            </select>
+            <button class="btn btn-outline-secondary" id="articleSearchButton">OK</button>            
+        </div>
+    </div>
+
+</div>

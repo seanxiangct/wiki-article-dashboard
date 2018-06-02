@@ -224,6 +224,17 @@ RevisionSchema.statics.findUserRevisions = function(user)
 	.exec()
 }
 
+RevisionSchema.statics.findUserRevisionsForTitle = function(user, title)
+{
+    return this.aggregate()
+    .match({
+        user: user,
+        title: title
+    })
+    .sort({timestamp:-1})
+    .exec()
+}
+
 // find title names and number of revisions
 RevisionSchema.statics.findTitleNamesRev = function()
 {
