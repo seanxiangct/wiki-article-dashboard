@@ -22,6 +22,8 @@ router.get('/individualresult', controller.individualResult);
 router.get('/authorSearchResult', controller.authorSearchResult);
 router.get('/authorArticleChanges', controller.authorArticleChanges);
 router.get('/authorRevisions', controller.authorRevisions);
+router.get('/individualmodal', controller.individualModal);
+
 
 // data acquisition routes
 router.get('/groupBar', controller.getGroupBarData);
@@ -29,6 +31,8 @@ router.get('/groupPie', controller.getGroupPieData);
 router.get('/individualBar', controller.getIndividualBarData);
 router.get('/individualPie', controller.getIndividualPieData);
 router.get('/individualUserBar', controller.getIndividualBarDataTopUsers);
+router.get('/individualSelectedUserBar', controller.getIndividualBarDataSelectedUsers);
+router.get('/top5Users', controller.getTop5Users);
 
 
 module.exports = router;

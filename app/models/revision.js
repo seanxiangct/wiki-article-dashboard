@@ -9,7 +9,8 @@ var RevisionSchema = new mongoose.Schema(
 			title: String, 
 		 	timestamp:Date, 
 		 	user:String, 
-		 	anon:String
+		 	anon:String,
+		 	type:String
 		},
 		{
 		 	versionKey: false
@@ -115,22 +116,7 @@ RevisionSchema.statics.findByYearAndType = function()
 
 RevisionSchema.statics.findByYearAndTypeForArticle = function(title)
 {
-	// return Revision.aggregate(
- //        [
- //        		{
- //        		  $match : { title: article }
- //        		},
- //            {
- //                $group : {
- //                   _id : { year: { $year: "$timestamp" }, user_type: '$type' },
- //                   count: { $sum: 1 }
- //                }
- //            },
- //            {
- //                $sort : { '_id.year': 1, 'user_type': 1 }
- //            },
- //        ]
- //    )
+
     return this.aggregate()
     .match({
     	title: title
@@ -207,7 +193,7 @@ RevisionSchema.statics.totalNumRevForUserAndArticle = function(title, type)
 	return this.find({title: title, type: type}).count()
 }
 
-// find distinct title names
+// find distinc title names
 RevisionSchema.statics.findTitleNames = function()
 {
 	return this.distinct('title')
@@ -238,9 +224,17 @@ RevisionSchema.statics.findUserRevisions = function(user)
 	.exec()
 }
 
+// find title names and number of revisions
+RevisionSchema.statics.findTitleNamesRev = function()
+{
+	return this.aggregate()
+	.group({_id:"$title", numOfEdits: {$sum:1}})
+	.sort('_id')
+	.exec()
+}
+
 RevisionSchema.statics.totalNumRev = function(title)
 {
-	console.log(title)
 	return this.find({title: title}).count()
 }
 

@@ -1,0 +1,10 @@
+<div class="btn-group-vertical chart-control" role="group" aria-label="Button group with nested dropdown">
+    <button type="button" class="btn btn-primary" id="chart-ok">Reload</button>
+    <select id="user-select" multiple="multiple">
+        <% for (let i = 0, size = topUsers.length; i < size; i++) {%>
+            <option value="<%= topUsers[i]._id %>">
+            <%= topUsers[i]._id %> 
+            </option>
+        <% } %> 
+    </select>
+</div>

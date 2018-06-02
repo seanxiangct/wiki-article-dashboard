@@ -10,20 +10,20 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Wiki Analytics</title>
+	<title>WikiLatic</title>
 
 	<!-- Bootstrap core CSS -->
-	<link href="dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	<!-- <link href="dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
 	<!-- Custom styles for this template -->
 	<link href="css/analytics.css" rel="stylesheet">
 
 	<!-- jQuery has to be loaded in head section-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	<script>
 		window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')
 	</script>
-	<!-- <script src="js/ejs.js"></script> -->
 
 	<!-- jQuery UI has to be loaded in head section-->
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -39,37 +39,43 @@
 </head>
 
 <body>
+    <header>
+        <div class="collapse bg-dark" id="navbarHeader">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-md-7 py-4">
+                        <h4 class="text-white">About</h4>
+                        <p class="text-muted">This project is about building a standalone Web Application for Wikipedia Article Data Analytics from scratch. It considered three aspects of the Wikipedia Articles, global distribution, individual analysis and author analysis. Both tabular and graphical representation of the data with user interactivity is included in their own sections and constantly updated using MediaWiki API. </p>
+                    </div>
 
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">Wiki Analytics</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse">
+                </div>
+            </div>
+        </div>
+        <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="/" class="navbar-brand d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    <strong>WikiLatic</strong>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>    
 
-			</div>
-			<!--/.navbar-collapse -->
-		</div>
-	</nav>
 
 	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div class="jumbotron">
 		<div class="container">
 
-			<h1>Overview</h1>
-
 			<div class="row">
-				<div id="tabs">
-					<a id="group_button" class="btn btn-primary btn-lg" role="button">Group Analysis&raquo;</a> 
-					<a id="individual_button" class="btn btn-primary btn-lg" role="button">Individual Analysis&raquo;</a>
-					<a id="author_button" class="btn btn-primary btn-lg" role="button">Author Analysis &raquo;</a>
-				</div>
+
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button id="group_button" type="button" class="btn btn-primary btn-lg">Overview</button>
+                    <button id="individual_button" type="button" class="btn btn-primary btn-lg">Individual</button>
+                    <button id="author_button" type="button" class="btn btn-primary btn-lg">Author</button>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -91,9 +97,10 @@
                 $("#analysis").addClass('group');
                 $("#analysis").removeClass('individual');
                 $("#analysis").removeClass('author');
-				$.getScript('js/charts.js')
+                $.getScript('js/charts.js')
 			});
-            $("#tabs").on('click', '#individual_button', function(){
+            $('#individual_button').click(function(){
+            // $("#tabs").on('click', '#individual_button', function(){
                 $("#analysis").load('/individual');
                 $("#analysis").removeClass('group');
                 $("#analysis").addClass('individual');
@@ -143,9 +150,40 @@
                     //console.log("Response status:" + jqXHR.status)
                 });
             }); 
-
+            
+            var titleInput;
             $(document).on('click', '#titleokay', function(){
-                var titleInput = {title: $("#titlelist").val()};
+                titleInput = {title: $("#titlelist").val()};
+                var jqxhr = $.get( '/individualmodal',titleInput);
+                jqxhr.done(function(result) {
+                    $('#indivModal').html(result);
+
+                    var top5 = $.get('/top5Users', titleInput);
+                    top5.done(function(users) {
+                        $('#user-select-container').html(users);
+                        $('#user-select').multiselect({
+                            includeSelectAllOption: true,
+                            selectAllValue: 'select-all-value'
+                        });
+
+                        $('#chart-container').show();
+                    });
+
+                    top5.fail(function(top5) {
+                        $('#user-select-container').html(top5.status);
+
+                    })
+                });
+                jqxhr.fail(function(jqXHR){
+                    $('#indivModal').html("Response status:" + jqXHR.status)
+                    //console.log("Response status:" + jqXHR.status)
+                });
+                $('#indivModal').css({ display: "block" });
+
+            });
+
+            $(document).on('click', '.close', function() {
+                $('#indivModal').css({ display: "none" });
                 var jqxhr = $.get( '/individualresult',titleInput);
                 jqxhr.done(function(result) {
                     $('#individualResult').html(result);
@@ -221,15 +259,14 @@
                 if ($('#bar-chart-container-2').length != 0)
                     document.getElementById('bar-chart-container-2').style.display = '';
             }); 
-            
+        });           
 
-		});
 
 	</script> 
 
 	<!-- Bootstrap core JavaScript -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
 	<!-- Google charts scripts -->
@@ -237,6 +274,10 @@
 
 	<!-- local script -->
 	<script src="js/charts.js"></script>
+
+    <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+    <!-- multi-select stylesheet -->
+    <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/> 
 
 	<script>
 
