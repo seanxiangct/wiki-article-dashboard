@@ -14,7 +14,6 @@
 
 	<!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-	<!-- <link href="dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
 	<!-- Custom styles for this template -->
 	<link href="css/analytics.css" rel="stylesheet">
@@ -25,16 +24,6 @@
 		window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')
 	</script>
 
-	<!-- jQuery UI has to be loaded in head section-->
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	
-	
-	<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
-	<!--<script src="assets/jsui/jquery-ui.js"></script>-->
-	<!--<script src="assets/jsui/jquery-ui.min.js"></script>-->
-	
 
 </head>
 
@@ -54,7 +43,6 @@
         <div class="navbar navbar-dark bg-dark box-shadow">
             <div class="container d-flex justify-content-between">
                 <a href="/" class="navbar-brand d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
                     <strong>WikiLatic</strong>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
@@ -208,33 +196,6 @@
 				}
 			});
 
-			// $(document).on('click', '#authorSearchButton', function(){
-			// 	var selectedUser = {user: $("#authorSearchInput").val()};
-   //              var jqxhr = $.get( '/authorArticleChanges',selectedUser);
-   //              jqxhr.done(function(result) {
-   //                  $('#authorResult').html(result);
-   //              });
-   //              jqxhr.fail(function(jqXHR){
-   //                  $('#authorResult').html("Response status:" + jqXHR.status)
-   //                  //console.log("Response status:" + jqXHR.status)
-   //              });
-			// })
-
-			// $(document).on('click', '#articleSearchButton', function(){
-			// 	var selectedUser = {user: $("#authorSearchInput").val()};
-			// 	var valString = {title: $("#changeList").val()};
-			// 	var selectedTitle = valString.title.substring(0, valString.title.indexOf('|'));
-			// 	selectedTitle = selectedTitle.trim();
-			// 	var data = {user: selectedUser.user, title: selectedTitle};
-   //              var jqxhr = $.get( '/authorRevisions',data);
-   //              jqxhr.done(function(result) {
-   //                  $('#authorRevisionResult').html(result);
-   //              });
-   //              jqxhr.fail(function(jqXHR){
-   //                  $('#authorResult').html("Response status:" + jqXHR.status)
-   //                  //console.log("Response status:" + jqXHR.status)
-   //              });
-			// })
 
             $(document).on('click', '#authorSearchButton', function(){
                 var selectedUser = {user: $("#authorSearchInput").val()};

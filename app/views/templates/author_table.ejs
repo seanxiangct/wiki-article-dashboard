@@ -1,5 +1,5 @@
         <div id="table-result">
-                <table class="table table-responsive table-hover">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Article Name</th>
@@ -19,6 +19,11 @@
                         <tbody id="group-of-rows-<%= i%>" class="collapse">
 
                             <% for (let j = 0, size = data[i][1].length; j < size; j++) {%>
+                                <% if (j == 0) {%>
+                                <tr>
+                                    <td class="table-sub-row" colspan="2" style="background-color: #d0ddea;">When</td>
+                                </tr>
+                                <% } %>    
                                 <tr>
                                     <td class="table-sub-row" colspan="2"><%= data[i][1][j].timestamp %></td>
                                 </tr>

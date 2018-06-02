@@ -60,6 +60,10 @@
 }
 
 /* collapsable table */
+#table-result {
+    width: 100%;
+}
+
 #table-result .table-sub-row {
     background-color: #e9ecef;
 }
