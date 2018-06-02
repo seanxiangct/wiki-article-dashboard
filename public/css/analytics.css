@@ -1,7 +1,5 @@
 /* Move down content because we have a fixed navbar that is 3.5rem tall */
-body {
-  padding-top: 3.5rem;
-}
+
 
 .chart-group {
     margin-top: 1em;
@@ -44,42 +42,6 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
-
-/* individual table */
-#indivResultTable {  
-    text-align: center;
-    border: collapse; 
-    border-spacing: 0;
- }
- 
-#indivResultTable tbody td{
-    border-top: 1pt solid #95BEF0;
-    border-bottom:  1pt solid #95BEF0;
-    line-height: 1.5em;
-    vertical-align: middle;
-    padding: 0.5em 0.75em;
- }
-
-#indivResultTable thead th {
-    padding: 0.25em 0.75em; 
- }
-#indivResultTable thead {
-    background-color: #EBF4FB ;
-    text-align: center;
- }
-
-#indivResultTable td:first-child {
-     text-align: left;
- }
- 
- 
-#indivResultTable caption {
-    background-color: #95BEF0;  
-    padding: 0.5em 0.5em; 
-    font-weight: bold;
-    font-size: 1.2em;
-    text-align: center;
- }
 
 /* multi-select dropdown in individual chart */
 #user-select-container {

@@ -1,18 +1,24 @@
 
         <!-- Example row of columns -->
+
         <div class="row">
-            <h3>Select an article</h3>
-                <label for="titlelist">Title (Total revisions):  </label>
-                <select id="titlelist">
-                        <% for (let i = 0, size = titleOptions.length; i < size; i++) {%>
-                            <option value="<%= titleOptions[i]._id %>" >
-                                <%= titleOptions[i]._id %> (<%= titleOptions[i].numOfEdits %>) 
-                            </option>
-                        <% } %>    
-                </select>
-                <button id="titleokay">OK</button>
+            <h2>Select an article</h2>
         </div>
-        <div id="individualResult" class="row">                
+
+        <div class="row">
+            
+            <label for="titlelist">Title (Total revisions):  </label>
+            <select id="titlelist">
+                    <% for (let i = 0, size = titleOptions.length; i < size; i++) {%>
+                        <option value="<%= titleOptions[i]._id %>" >
+                            <%= titleOptions[i]._id %> (<%= titleOptions[i].numOfEdits %>) 
+                        </option>
+                    <% } %>    
+            </select>           
+            <button id="titleokay">OK</button>
+
+        </div>
+        <div id="individualResult" >                
         </div>
 
         <!-- The Modal -->
@@ -21,24 +27,29 @@
         </div>
 
 
-        <div class="chart row">
-            <h2>Overall Charts</h2>
-            <div>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-primary active" id="option1" >
-                        <input type="radio" name="options" autocomplete="off"  checked> Bar Chart
-                    </label>
-                    <label class="btn btn-primary" id="option2" >
-                        <input type="radio" name="options" autocomplete="off" > Pie Chart
-                    </label>
-                    <label class="btn btn-primary " id="option3" >
-                        <input type="radio" name="options" autocomplete="off"> Top Users Bar Chart
-                    </label>
-                </div>
-                
+        <div id="chart-container" class="chart" style="display: none">
+            <div class="row">
+                <h2>Individual Charts</h2>
+            </div>
+            <div class="row">
+                <div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-primary active" id="option1" >
+                            <input type="radio" name="options" autocomplete="off"  checked> Bar Chart
+                        </label>
+                        <label class="btn btn-primary" id="option2" >
+                            <input type="radio" name="options" autocomplete="off" > Pie Chart
+                        </label>
+                        <label class="btn btn-primary " id="option3" >
+                            <input type="radio" name="options" autocomplete="off"> Top Users Bar Chart
+                        </label>
+                    </div>
+                    
+                </div>               
             </div>
 
-            <div class="chart-group">
+
+            <div class="chart-group row">
                 <div id="bar-chart-container">
                     <h3>Revision number by year</h2>
                     <div id="bar-chart"></div>
@@ -60,9 +71,5 @@
         </div>
 
 
-        <hr>
 
-        <footer>
-            <p>&copy; 2016 Company, Inc.</p>
-        </footer>
   
