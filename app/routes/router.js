@@ -18,6 +18,10 @@ router.get('/age', controller.numAge);
 // individual
 router.get('/individual', controller.individualPage);
 router.get('/individualresult', controller.individualResult);
+// author
+router.get('/authorSearchResult', controller.authorSearchResult);
+router.get('/authorArticleChanges', controller.authorArticleChanges);
+router.get('/authorRevisions', controller.authorRevisions);
 router.get('/individualmodal', controller.individualModal);
 
 

@@ -1,0 +1,9 @@
+<!-- Return timestamps of all changes by a specific user for a specific title -->
+
+<h3>Revisions made to <%= title %></h3>
+
+    <% for (let i = 0, size = titleRevisions.length; i < size; i++) {%>
+        <p>
+            <%= titleRevisions[i].timestamp %>
+        </p>
+    <% } %>
