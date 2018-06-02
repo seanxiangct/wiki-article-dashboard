@@ -213,6 +213,31 @@ RevisionSchema.statics.findTitleNames = function()
 	return this.distinct('title')
 }
 
+// find distinct user names
+RevisionSchema.statics.findUserNames = function()
+{
+	return this.distinct('user')
+}
+
+// find titles changed by specific user
+RevisionSchema.statics.findArticleChanges = function(user)
+{
+	return this.aggregate()
+	.match({user: user})
+	.group({_id:"$title", numOfEdits: {$sum:1}})
+	.sort('-numOfEdits')
+	.exec()
+}
+
+// find revisions for specific user for specific title
+RevisionSchema.statics.findUserRevisions = function(user)
+{
+	return this.aggregate()
+	.match({user: user})
+	.sort({timestamp:-1})
+	.exec()
+}
+
 RevisionSchema.statics.totalNumRev = function(title)
 {
 	console.log(title)

@@ -18,7 +18,10 @@ router.get('/age', controller.numAge);
 // individual
 router.get('/individual', controller.individualPage);
 router.get('/individualresult', controller.individualResult);
-
+// author
+router.get('/authorSearchResult', controller.authorSearchResult);
+router.get('/authorArticleChanges', controller.authorArticleChanges);
+router.get('/authorRevisions', controller.authorRevisions);
 
 // data acquisition routes
 router.get('/groupBar', controller.getGroupBarData);

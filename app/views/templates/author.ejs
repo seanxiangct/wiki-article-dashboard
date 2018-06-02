@@ -1,21 +1,21 @@
 
         <!-- Example row of columns -->
         <div class="row">
-                <h3>Select an author</h3>
-                    <form method="post">
-                        <label for="highRev">Author:  </label>
-                        <input id="articleTitle" type="text" name="title" value="Enter author's name">
-                        <input type="submit" value="OK">
-                    </form>     
-            </div>
-            <div class="row">
-                <h2>Display results here</h2>
-                    
-            </div>
+            <h3>Select an author</h3>
+                <label for="authorSearchLabel">Enter author's name:
+                <input list="authorList" id="authorSearchLabel" name="myAuthor" value="Enter at least three characters"/></label>
+                <datalist id="authorList">
+                </datalist>
+                <input type="submit" value="OK" id="authorSearchButton">
+        </div>
+        <div id="authorResult" class="row">
+        </div>
+
+        <div id="authorRevisionResult" class="row">
+        </div>
     
-            <hr>
+        <hr>
     
-            <footer>
-                <p>&copy; 2016 Company, Inc.</p>
-            </footer>
-      
+        <footer>
+            <p>&copy; 2016 Company, Inc.</p>
+        </footer>

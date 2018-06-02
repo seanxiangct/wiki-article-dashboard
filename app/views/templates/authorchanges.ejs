@@ -1,0 +1,12 @@
+<!-- Return articles changed by a specific user as a dropdown list -->
+
+<h3>Select an article</h3>
+<label for="changeList">Title:  </label>
+<select id="changeList">
+        <% for (let i = 0, size = articleChanges.length; i < size; i++) {%>
+            <option>
+                <%= articleChanges[i]._id %> | <%= articleChanges[i].numOfEdits %> revisions
+            </option>
+        <% } %>    
+</select>
+<button id="articleSearchButton">OK</button>
