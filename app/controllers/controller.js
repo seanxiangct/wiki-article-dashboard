@@ -625,7 +625,8 @@ module.exports.authorTable = function(req, res)
             console.log(data.length)
             if (data.length == 0)
             {
-                req.flash('danger', 'User does not exists');
+                console.log('alert')
+                res.render('templates/alert.ejs');
             } else {
 
                 res.render('templates/author_table.ejs', {data: data});
