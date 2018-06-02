@@ -36,16 +36,22 @@ function individual_charts()
 
 function draw_individual_charts()
 {
-
+    $('#chart-container').show();
     var titleInput = {title: $("#titlelist").val()};
     $.getJSON('/individualBar', titleInput, function(data) {
         draw_bar(data);
+    });
+    $('#option1').click(function(event) {
+        $.getJSON('/individualBar', titleInput, function(data) {
+            draw_bar(data);
+        });        
     });
     $.getJSON('/individualPie', titleInput, function(data) {
         draw_pie(data);
     });
     if ($('#user-select').val() == null || typeof $('#user-select').val() === 'undefined')
     {
+
         $.getJSON('/individualUserBar', titleInput, function(data) {
             draw_bar_user(data);
         });
@@ -55,6 +61,7 @@ function draw_individual_charts()
             title: titleInput,
             users: users
         };
+
         $.getJSON('/individualSelectedUserBar', param, function(data) {
             draw_bar_user(data);
         });        

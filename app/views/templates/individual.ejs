@@ -7,15 +7,20 @@
 
         <div class="row">
             
-            <label for="titlelist">Title (Total revisions):  </label>
-            <select id="titlelist">
-                    <% for (let i = 0, size = titleOptions.length; i < size; i++) {%>
-                        <option value="<%= titleOptions[i]._id %>" >
-                            <%= titleOptions[i]._id %> (<%= titleOptions[i].numOfEdits %>) 
-                        </option>
-                    <% } %>    
-            </select>           
-            <button id="titleokay">OK</button>
+            <div class="form-group">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <select class="form-control" id="titlelist">
+                            <% for (let i = 0, size = titleOptions.length; i < size; i++) {%>
+                                <option value="<%= titleOptions[i]._id %>" >
+                                    <%= titleOptions[i]._id %> (<%= titleOptions[i].numOfEdits %>) 
+                                </option>
+                            <% } %>    
+                    </select>                        
+                    <button class="btn btn-outline-secondary" id="titleokay">OK</button>
+                </div>
+           
+            </div>
+           
 
         </div>
         <div id="individualResult" >                

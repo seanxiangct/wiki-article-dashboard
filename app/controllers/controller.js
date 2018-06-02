@@ -119,9 +119,7 @@ module.exports.getGroupBarData = function(req, res)
     .then(function(result) {
         res.json(result);
     }).catch(function(err) {
-        console.log(err);
         console.log("Cannot get group bar data");
-        console.log(err)
     });
 }
 
@@ -358,7 +356,7 @@ module.exports.showAnalyticsPage = function(req, res)
 module.exports.numRevision = function(req, res)
 {
     var number = Number(req.query.number);
-    console.log(number);
+    // console.log(number);
     var highestRevRes = [];
     var lowestRevRes = [];
 
@@ -394,7 +392,7 @@ module.exports.numRevision = function(req, res)
 module.exports.numPopular = function(req, res)
 {
     var number = Number(req.query.number);
-    console.log(number);
+    // console.log(number);
     var highestUniqueUserRes = [];
     var lowestUniqueUserRes = [];
 
@@ -423,8 +421,8 @@ module.exports.numPopular = function(req, res)
         }
     })
     .then(function() {
-        console.log(highestUniqueUserRes);
-        console.log(lowestUniqueUserRes);
+        // console.log(highestUniqueUserRes);
+        // console.log(lowestUniqueUserRes);
         res.render('templates/popular.ejs', { top_regUsers: highestUniqueUserRes, bottom_regUsers: lowestUniqueUserRes });
     })
 }
@@ -432,7 +430,7 @@ module.exports.numPopular = function(req, res)
 module.exports.numAge = function(req, res)
 {
     var number = Number(req.query.number);
-    console.log(number);
+    // console.log(number);
     var highestAgeRes = [];
     var lowestAgeRes = [];
 
@@ -501,7 +499,7 @@ module.exports.individualResult = function(req,res)
     var title = req.query.title;
     var numRev;
     var topUsers = [];
-    console.log(title); //why print twice???
+    // console.log(title); //why print twice???
    
     Promise.resolve(Revision.totalNumRev(title))
     .then(undefined, function(err) {

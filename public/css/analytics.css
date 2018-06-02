@@ -5,6 +5,12 @@
     margin-top: 1em;
 }
 
+/* individual title list dropdown */
+#titlelist {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -46,7 +52,7 @@
 /* multi-select dropdown in individual chart */
 #user-select-container {
     width: 100%;
-    max-width: 300px;
+    max-width: 400px;
     margin: auto;
     margin-left: 0px;
     margin-bottom: 1em;
