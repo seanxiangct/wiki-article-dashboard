@@ -45,6 +45,7 @@ Please run these three javascript files after the data is successfully loaded.
 ### Module Modification 
 One of the function in node_module 'nodemw', needs to be modified prior the use of the app. 
 
+Location: nodemw/lib/bot.js
 Function name: `getArticleRevisions`
 
 Change to: 
