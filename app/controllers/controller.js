@@ -2,11 +2,11 @@ const Revision = require("../models/revision");
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
-var bot = require('nodemw');
+var mw = require('nodemw');
 const user_data = require('../models/UserData')
 
 // pass configuration object
-var client = new bot({
+var client = new mw({
   protocol: 'https',           // Wikipedia now enforces HTTPS
   server: 'en.wikipedia.org',  // host name of MediaWiki-powered site
   path: '/w',                  // path to api.php script
@@ -543,51 +543,6 @@ module.exports.authorSearchResult = function(req,res)
     })
 }
 
-module.exports.authorArticleChanges = function(req, res) 
-{   
-    var user = req.query.user;
-    var articleChangeList = [];
-
-    Promise.resolve(Revision.findArticleChanges(user))
-    .then(undefined, function(err) {
-        console.log(err);
-    })
-    .then(function(articleChanges) {
-        for (let i = 0, size = articleChanges.length; i < size; i++) { 
-            articleChangeList[i] = articleChanges[i];
-        }
-        // console.log(articleChangeList);
-    })
-    .then(function() {
-        res.render('templates/authorchanges.ejs', {articleChanges : articleChangeList});
-    })
-    
-}
-
-module.exports.authorRevisions = function(req, res) 
-{   
-    var user = req.query.user;
-    var selectedTitle = req.query.title;
-    var authorTitleRevisions = [];
-
-    Promise.resolve(Revision.findUserRevisions(user))
-    .then(undefined, function(err) {
-        console.log(err);
-    })
-    .then(function(authorRevisions) {
-        for (let i = 0, size = authorRevisions.length; i < size; i++) {
-            if (authorRevisions[i].title == selectedTitle) {
-                authorTitleRevisions.push({timestamp: authorRevisions[i].timestamp});
-            }
-        }
-        // console.log(selectedTitle);
-        // console.log(authorTitleRevisions);
-    })
-    .then(function() {
-        res.render('templates/authorrevisions.ejs', {titleRevisions : authorTitleRevisions, title: selectedTitle});
-    })
-}  
-
 module.exports.authorTable = function(req, res)
 {
     var user = req.query.user;
@@ -622,7 +577,6 @@ module.exports.authorTable = function(req, res)
                 ]
             }
 
-            console.log(data.length)
             if (data.length == 0)
             {
                 console.log('alert')

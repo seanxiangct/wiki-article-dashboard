@@ -22,8 +22,6 @@ router.get('/individualmodal', controller.individualModal);
 
 // author
 router.get('/authorSearchResult', controller.authorSearchResult);
-router.get('/authorArticleChanges', controller.authorArticleChanges);
-router.get('/authorRevisions', controller.authorRevisions);
 router.get('/authorTable', controller.authorTable);
 
 

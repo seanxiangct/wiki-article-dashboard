@@ -215,15 +215,6 @@ RevisionSchema.statics.findArticleChanges = function(user)
 	.exec()
 }
 
-// find revisions for specific user for specific title
-RevisionSchema.statics.findUserRevisions = function(user)
-{
-	return this.aggregate()
-	.match({user: user})
-	.sort({timestamp:-1})
-	.exec()
-}
-
 RevisionSchema.statics.findUserRevisionsForTitle = function(user, title)
 {
     return this.aggregate()
