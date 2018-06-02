@@ -43,15 +43,6 @@ module.exports.signUp = function(req, res)
         'psw': psw
     };
     
-//    hash password
-//    bcrypt.genSalt(10, function(err, salt) {
-//        bcrypt.hash(data.psw, salt, function(err, hash) {
-//            if (err) {
-//                console.log(err);
-//            }
-//            data.psw = hash;
-//        });
-//    });
 
 User.save_user_data(data, function(err, result){
 
@@ -631,7 +622,15 @@ module.exports.authorTable = function(req, res)
                 ]
             }
 
-            res.render('templates/author_table.ejs', {data: data});
+            console.log(data.length)
+            if (data.length == 0)
+            {
+                req.flash('danger', 'User does not exists');
+            } else {
+
+                res.render('templates/author_table.ejs', {data: data});
+            }
+
         }).catch(function(err) {
             console.log("Cannot create author table");
         });        

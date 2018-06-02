@@ -49,7 +49,8 @@ function draw_individual_charts()
     $.getJSON('/individualPie', titleInput, function(data) {
         draw_pie(data);
     });
-    if ($('#user-select').val() == null || typeof $('#user-select').val() === 'undefined')
+    if ($('#user-select').val() == null || typeof $('#user-select').val() === 'undefined' ||
+        $('#user-select').val().length == 0)
     {
 
         $.getJSON('/individualUserBar', titleInput, function(data) {
