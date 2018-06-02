@@ -7,23 +7,49 @@
         <b>results</b>
         <button id="okay1">OK</button>
         <div id="numRevisionResult" class="row">
+
             <div class="col-md-6">
                 <h4>Articles with highest number of revisions</h4>
-                <% for (let i = 0, size = top_revisions.length; i < size; i++) {%>
-                    <p>
-                        <%= top_revisions[i]._id%> : <%= top_revisions[i].numOfEdits%>
-                    </p>
-                <% } %>
-                <div id="content"></div>
+                <table class="table table-striped table-hover ">
+                    <thead>
+                        <tr>
+                            <th>Article Name</th>
+                            <th>Number of Revisions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i = 0, size = top_revisions.length; i < size; i++) {%>
+                            <tr>
+                                <td><%= top_revisions[i]._id%></td>
+                                <td><%= top_revisions[i].numOfEdits%></td>
+                            </tr>
+                        <% } %>                        
+                    </tbody>
+                    
+                </table>               
             </div>
+
             <div class="col-md-6">
                 <h4>Articles with lowest number of revisions</h4>
-                <% for (let i = 0, size = bottom_revisions.length; i < size; i++) {%>
-                    <p>
-                        <%= bottom_revisions[i]._id%> : <%= bottom_revisions[i].numOfEdits%>
-                    </p>
-                <% } %>
+                <table class="table table-striped table-hover ">
+                    <thead>
+                        <tr>
+                            <th>Article Name</th>
+                            <th>Number of Revisions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i = 0, size = top_revisions.length; i < size; i++) {%>
+                            <tr>
+                                <td><%= bottom_revisions[i]._id%></td>
+                                <td><%= bottom_revisions[i].numOfEdits%></td>
+                            </tr>
+                        <% } %>                        
+                    </tbody>
+                    
+                </table>               
             </div>
+
         </div>
     </div>
 <div id="popular row">  
@@ -33,77 +59,132 @@
     <b>results</b>
     <button id="okay2">OK</button>
     <div id="numPopularResult" class="row">
+
+
         <div class="col-md-6">
             <h4>Articles with largest group of registered users</h4>
-            <% for (let i = 0, size = top_regUsers.length; i < size; i++) {%>
-                <p>
-                    <%= top_regUsers[i]._id%> : <%= top_regUsers[i].noUniqueUsers%>
-                </p>
-            <% } %>
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Article Name</th>
+                        <th>Number of Users</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i = 0, size = top_regUsers.length; i < size; i++) {%>
+                        <tr>
+                            <td><%= top_regUsers[i]._id%></td>
+                            <td><%= top_regUsers[i].noUniqueUsers%></td>
+                        </tr>
+                    <% } %>                        
+                </tbody>
+                
+            </table>               
         </div>
+
         <div class="col-md-6">
             <h4>Articles with smallest group of registered users</h4>
-            <% for (let i = 0, size = bottom_regUsers.length; i < size; i++) {%>
-                <p>
-                    <%= bottom_regUsers[i]._id%> : <%= bottom_regUsers[i].noUniqueUsers%>
-                </p>
-            <% } %>
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Article Name</th>
+                        <th>Number of Users</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i = 0, size = bottom_regUsers.length; i < size; i++) {%>
+                        <tr>
+                            <td><%= bottom_regUsers[i]._id%></td>
+                            <td><%= bottom_regUsers[i].noUniqueUsers%></td>
+                        </tr>
+                    <% } %>                        
+                </tbody>
+                
+            </table>               
         </div>
+
     </div>
 </div>
 
 
 <div id="history"> 
-        <h2>History</h2>
-        <label for="numHistory">Show </label>
-        <input id="numHistory" type="number" name="numArticle" min="1" max="<%= numLimit %>" value="3">
-        <b>results</b>
-        <button id="okay3">OK</button> 
-        <div id="numHistoryResult" class="row">
-                <div class="col-md-6">
-                    <h4>Articles with longest history (measured by age in years)</h4>
+    <h2>History</h2>
+    <label for="numHistory">Show </label>
+    <input id="numHistory" type="number" name="numArticle" min="1" max="<%= numLimit %>" value="3">
+    <b>results</b>
+    <button id="okay3">OK</button> 
+    <div id="numHistoryResult" class="row">
+
+
+        <div class="col-md-6">
+            <h4>Articles with longest history (measured by age in years)</h4>
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Article Name</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <% for (let i = 0, size = oldest_articles.length; i < size; i++) {%>
-                        <p>
-                            <%= oldest_articles[i].title%> : <%= oldest_articles[i].age%>
-                        </p>
-                    <% } %>
-                </div>
-                <div class="col-md-6">
-                    <h4>Articles with shortest history (measured by age in years)</h4>
-                   <% for (let i = 0, size = youngest_articles.length; i < size; i++) {%>
-                        <p>
-                            <%= youngest_articles[i].title%> : <%= youngest_articles[i].age%>
-                        </p>
-                    <% } %>
-                </div>
-            </div>
+                        <tr>
+                            <td><%= oldest_articles[i].title%></td>
+                            <td><%= oldest_articles[i].age%></td>
+                        </tr>
+                    <% } %>                        
+                </tbody>
+                
+            </table>               
+        </div>
+
+        <div class="col-md-6">
+            <h4>Articles with shortest history (measured by age in years)</h4>
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Article Name</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i = 0, size = youngest_articles.length; i < size; i++) {%>
+                        <tr>
+                            <td><%= youngest_articles[i].title%></td>
+                            <td><%= youngest_articles[i].age%></td>
+                        </tr>
+                    <% } %>                        
+                </tbody>
+                
+            </table>               
+        </div>            
+    </div>
 </div>
 
 <div class="chart">
-        <h2>Overall Charts</h2>
-        <div>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-primary active" id="option1" >
-                    <input type="radio" name="options" autocomplete="off"  checked> Bar Chart
-                </label>
-                <label class="btn btn-primary" id="option2" >
-                    <input type="radio" name="options" autocomplete="off" > Pie Chart
-                </label>
+    <h2>Overall Charts</h2>
+    <div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary active" id="option1" >
+                <input type="radio" name="options" autocomplete="off"  checked> Bar Chart
+            </label>
+            <label class="btn btn-primary" id="option2" >
+                <input type="radio" name="options" autocomplete="off" > Pie Chart
+            </label>
 
-            </div>
-            
         </div>
+        
+    </div>
 
-        <div class="chart-group">
-            <div id="bar-chart-container">
-                <h3>Revision number by year</h2>
-                <div id="bar-chart"></div>
-            </div>   
-            <div id="pie-chart-container" style="display: none;">
-                <h3>Revision number distribution by user type</h2>
-                <div id="pie-chart"></div>
-            </div>
+    <div class="chart-group">
+        <div id="bar-chart-container">
+            <h3>Revision number by year</h2>
+            <div id="bar-chart"></div>
+        </div>   
+        <div id="pie-chart-container" style="display: none;">
+            <h3>Revision number distribution by user type</h2>
+            <div id="pie-chart"></div>
         </div>
+    </div>
 
 </div>
 

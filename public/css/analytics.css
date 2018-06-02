@@ -45,13 +45,14 @@ body {
     cursor: pointer;
 }
 
-table {  
+/* individual table */
+#indivResultTable {  
     text-align: center;
     border: collapse; 
     border-spacing: 0;
  }
  
- table tbody td{
+#indivResultTable tbody td{
     border-top: 1pt solid #95BEF0;
     border-bottom:  1pt solid #95BEF0;
     line-height: 1.5em;
@@ -59,23 +60,33 @@ table {
     padding: 0.5em 0.75em;
  }
 
- table thead th {
+#indivResultTable thead th {
     padding: 0.25em 0.75em; 
  }
- table thead {
+#indivResultTable thead {
     background-color: #EBF4FB ;
     text-align: center;
  }
 
- td:first-child {
+#indivResultTable td:first-child {
      text-align: left;
  }
  
  
- caption {
+#indivResultTable caption {
     background-color: #95BEF0;  
     padding: 0.5em 0.5em; 
     font-weight: bold;
     font-size: 1.2em;
     text-align: center;
  }
+
+/* multi-select dropdown in individual chart */
+#user-select-container {
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    margin-left: 0px;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
